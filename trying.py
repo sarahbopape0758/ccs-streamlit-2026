@@ -67,7 +67,7 @@ html, body, .stApp {{ background:{T['bg']}; color:{T['text']}; }}
 .message.ai {{ background:rgba(34,211,238,.15); padding:12px; border-radius:14px; margin-bottom:10px; }}
 
 footer {{ text-align:center; color:{T['muted']}; padding:20px; }}
-.stFileUploader label, .stFileUploader span, .stFileUploader small { color: var(--text) !important; }
+.stFileUploader label, .stFileUploader span, .stFileUploader small { color: " + T['text'] + " !important; }
 .stFileUploader div { background-color: var(--card) !important; border-radius:12px; }
 </style>
 """, unsafe_allow_html=True)
@@ -114,30 +114,6 @@ if section == "Home":
       <div><h3>6+</h3><p>Languages</p></div>
     </div>
     """, unsafe_allow_html=True)
-
-elif section != "Home":
-    pass
-
-
-
-    with col1:
-        st.markdown("""
-        <div class="card">
-        <h2>Welcome</h2>
-        <p>
-        This interactive portfolio showcases my academic journey, technical skills, certifications,
-        and projects in cybersecurity, networking, and software development.
-        </p>
-        </div>
-        """, unsafe_allow_html=True)
-    with col2:
-        st.markdown("""
-        <div class="card kpi">
-          <div><h3>2026</h3><p>Final Year</p></div>
-          <div><h3>10+</h3><p>Certifications</p></div>
-          <div><h3>6+</h3><p>Languages</p></div>
-        </div>
-        """, unsafe_allow_html=True)
 
 # ------------------ ABOUT ------------------
 elif section == "About":
@@ -285,3 +261,4 @@ st.markdown(f"""
 © 2026 Mmatsie Sara Bopape • Cybersecurity Portfolio
 </footer>
 """, unsafe_allow_html=True)
+
