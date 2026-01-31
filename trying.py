@@ -1,10 +1,9 @@
 # css2026-sarah-bopape-portfolio
-# Streamlit Portfolio for Mmatsie Sara Bopape - Fixed (No plotly)
+# Premium Streamlit portfolio for Mmatsie Sara Bopape - Upgraded
 
 import streamlit as st
 import random
 import hashlib
-from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
 import io
 
@@ -16,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ------------------ THEME TOGGLE ------------------
+# ------------------ THEME ------------------
 if "theme" not in st.session_state:
     st.session_state.theme = "dark"
 
@@ -64,6 +63,12 @@ html, body, .stApp {{ background:{T['bg']}; color:{T['text']}; }}
 .kpi {{ display:flex; gap:14px; }}
 .kpi div {{ flex:1; padding:16px; border-radius:16px; background:rgba(124,156,255,.12); }}
 
+.skill-card {{
+  display:inline-block; background:{T['accent']}; color:#fff;
+  padding:12px 18px; border-radius:12px; margin:5px;
+  cursor:default;
+}}
+
 .chat {{ height:420px; overflow-y:auto; }}
 .message.user {{ background:rgba(124,156,255,.15); padding:12px; border-radius:14px; margin-bottom:10px; }}
 .message.ai {{ background:rgba(34,211,238,.15); padding:12px; border-radius:14px; margin-bottom:10px; }}
@@ -80,35 +85,32 @@ with st.sidebar:
     if st.button("Toggle Dark / Light 🌗"):
         st.session_state.theme = "light" if st.session_state.theme == "dark" else "dark"
         st.rerun()
-
     st.markdown("---")
     section = st.radio("Navigate", ["Home", "About", "Projects", "Skills", "CV", "Ask Me", "Game", "Tools", "Timeline", "Badges"])
 
 # ------------------ HOME ------------------
 if section == "Home":
-    st.markdown("""
-    <div class=\"hero\">
+    st.markdown(f"""
+    <div class="hero">
       <h1>Mmatsie Sara Bopape</h1>
       <h3>Cybersecurity Enthusiast & Final-Year Computer Science Student</h3>
-      <p style=\"max-width:850px\">
+      <p style="max-width:850px">
       Final year BSc Computer Science student at Walter Sisulu University, passionate about cybersecurity,
       networking, and building innovative solutions to complex security challenges.
       </p>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class=\"card\">
-    <h2>Welcome</h2>
-    <p>
-    This interactive portfolio showcases my academic journey, technical skills, certifications,
-    and projects in cybersecurity, networking, and software development.
-    </p>
+    st.markdown(f"""
+    <div class="card">
+      <h2>Welcome</h2>
+      <p>This interactive portfolio showcases my academic journey, technical skills, certifications,
+      and projects in cybersecurity, networking, and software development.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class=\"card kpi\">
+    st.markdown(f"""
+    <div class="card kpi">
       <div><h3>2026</h3><p>Final Year</p></div>
       <div><h3>10+</h3><p>Certifications</p></div>
       <div><h3>6+</h3><p>Languages</p></div>
@@ -119,23 +121,22 @@ if section == "Home":
 elif section == "About":
     st.markdown("""
     <div class="card">
-    <h2>Education</h2>
-    <b>BSc Computer Science</b> — Walter Sisulu University (2022–2026)<br>
-    Modules: Data Structures, Computer Architecture, Operating Systems, Networking,
-    Mathematics, Web Development, Software Engineering
-    <hr>
-    <b>Grade 12</b> — Eqinisweni Secondary School (2022)
+      <h2>Education</h2>
+      <b>BSc Computer Science</b> — Walter Sisulu University (2022–2026)<br>
+      Modules: Data Structures, Computer Architecture, Operating Systems, Networking,
+      Mathematics, Web Development, Software Engineering
+      <hr>
+      <b>Grade 12</b> — Eqinisweni Secondary School (2022)
     </div>
 
     <div class="card">
-    <h2>Experience</h2>
-    <b>Tutor</b> — Walter Sisulu University (Jan 2025 – Nov 2025)<br>
-    • Teaching Linear Programming & Applied Computing<br>
-    • Exam preparation and student support<br>
-    <br>
-    <b>IEC Digital Registration Assistant</b> (Aug 2025 – Sep 2025)<br>
-    • Assisted community members with voter registration<br>
-    • Improved digital literacy and ensured data accuracy
+      <h2>Experience</h2>
+      <b>Tutor</b> — Walter Sisulu University (Jan 2025 – Nov 2025)<br>
+      • Teaching Linear Programming & Applied Computing<br>
+      • Exam preparation and student support<br><br>
+      <b>IEC Digital Registration Assistant</b> (Aug 2025 – Sep 2025)<br>
+      • Assisted community members with voter registration<br>
+      • Improved digital literacy and ensured data accuracy
     </div>
     """, unsafe_allow_html=True)
 
@@ -143,37 +144,44 @@ elif section == "About":
 elif section == "Projects":
     st.markdown("""
     <div class="card">
-    <h3>Smart Lecturer Scheduling & Navigation System</h3>
-    React web app helping students check lecturer availability and campus directions.
+      <h3>Smart Lecturer Scheduling & Navigation System</h3>
+      React web app helping students check lecturer availability and campus directions.
     </div>
     <div class="card">
-    <h3>Hill Cipher Encryption / Decryption Tool</h3>
-    Cryptography tool using matrix mathematics and modular arithmetic.
+      <h3>Hill Cipher Encryption / Decryption Tool</h3>
+      Cryptography tool using a Caesar Cipher (shift letters by a fixed key).
     </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("<h4>Try a quick encryption demo:</h4>", unsafe_allow_html=True)
-    msg = st.text_input("Message to encrypt")
-    key = st.number_input("Shift key (1-25)", 1, 25, 3)
-    if st.button("Encrypt") and msg:
+
+    # Encryption / Decryption Demo
+    st.markdown("<h4>Try a quick encryption & decryption demo:</h4>", unsafe_allow_html=True)
+    msg = st.text_input("Message")
+    key = st.number_input("Shift key (1-25)", 1, 3)
+    col1, col2 = st.columns(2)
+    if col1.button("Encrypt"):
         encrypted = ''.join([chr(((ord(c)-65+key)%26)+65) if c.isupper() else
                              chr(((ord(c)-97+key)%26)+97) if c.islower() else c for c in msg])
         st.success(f"Encrypted message: {encrypted}")
+        st.info("This demonstrates a Caesar cipher shift. Letters are shifted by the key.")
+    if col2.button("Decrypt"):
+        decrypted = ''.join([chr(((ord(c)-65-key)%26)+65) if c.isupper() else
+                             chr(((ord(c)-97-key)%26)+97) if c.islower() else c for c in msg])
+        st.success(f"Decrypted message: {decrypted}")
+        st.info("Decryption reverses the shift to reveal the original message.")
 
 # ------------------ SKILLS ------------------
 elif section == "Skills":
     st.markdown("<h2>My Skills</h2>", unsafe_allow_html=True)
     skills = {
-        "Python": 90,
-        "Java": 70,
-        "C++": 80,
-        "Networking": 85,
-        "Linux": 75,
-        "Cybersecurity": 95
+        "Python": "Used for automation, scripts, and cybersecurity tools.",
+        "Java": "Experience in OOP and building desktop/web apps.",
+        "C++": "Strong understanding of algorithms and system programming.",
+        "Networking": "Knowledge of TCP/IP, routing, switching, Packet Tracer.",
+        "Linux": "Proficient in CLI, Bash scripting, and server management.",
+        "Cybersecurity": "Skills in cryptography, hashes, vulnerability testing."
     }
-    for skill, value in skills.items():
-        st.write(f"{skill}")
-        st.progress(value)
+    for skill, desc in skills.items():
+        st.markdown(f'<div class="skill-card" title="{desc}">{skill}</div>', unsafe_allow_html=True)
 
 # ------------------ CV ------------------
 elif section == "CV":
@@ -195,9 +203,9 @@ elif section == "CV":
 elif section == "Ask Me":
     st.markdown("## Ask Me Anything")
     knowledge = {
-        "who is sarah": "Mmatsie Sara Bopape is a final-year BSc Computer Science student at Walter Sisulu University.",
-        "who is mmatsie": "Mmatsie Sara Bopape is a cybersecurity enthusiast and final-year Computer Science student.",
-        "when did she matriculate": "She matriculated in 2022 at Eqinisweni Secondary School.",
+        "who is sarah": "Mmatsie Sara Bopape is a final-year BSc Computer Science student.",
+        "who is mmatsie": "Cybersecurity enthusiast and final-year Computer Science student.",
+        "when did she matriculate": "Matriculated in 2022 at Eqinisweni Secondary School.",
         "what does she study": "BSc Computer Science at Walter Sisulu University.",
         "what are her skills": "Cybersecurity, networking, C++, Java, Python, JavaScript, Linux.",
     }
@@ -243,6 +251,7 @@ elif section == "Game":
 # ------------------ TOOLS ------------------
 elif section=="Tools":
     st.markdown("## 🔧 Cybersecurity Tools & Demos")
+    st.markdown("### SHA256 Hash Generator\nSHA256 creates a secure hash, used for password protection, digital signatures, and data integrity.")
     msg = st.text_input("Enter text to hash (SHA256)")
     if st.button("Hash Text") and msg:
         h = hashlib.sha256(msg.encode()).hexdigest()
@@ -264,20 +273,34 @@ elif section=="Timeline":
             st.balloons()
             st.success(f"🎉 Milestone {year} celebrated!")
 
-# ------------------ BADGES ------------------
+# ------------------ BADGES / CERTIFICATES ------------------
 elif section=="Badges":
-    st.markdown("## 🏆 Earn Your Badge")
-    badge_text = "Visited Sara's Cybersecurity Portfolio"
-    if st.button("Download Badge"):
-        img = Image.new('RGB', (400,200), color=(44,62,80))
-        d = ImageDraw.Draw(img)
-        font = ImageFont.load_default()
-        d.text((20,80), badge_text, fill=(255,255,255), font=font)
-        buf = io.BytesIO()
-        img.save(buf, format='PNG')
-        st.download_button("Download PNG", buf.getvalue(), file_name="badge.png", mime="image/png")
-        for _ in range(2): st.balloons()
-        st.success("🎊 Badge downloaded! Celebrate your visit!")
+    st.markdown("## 🏆 Certificates & Badges")
+    st.markdown("Click Next / Previous to view your achievements.")
+
+    if "badge_index" not in st.session_state:
+        st.session_state.badge_index = 0
+
+    # Example list of badge images + info
+    badges = [
+        {"img":"cert1.png","name":"Cisco Networking","provider":"Cisco"},
+        {"img":"cert2.png","name":"Python for Cybersecurity","provider":"Udemy"},
+        {"img":"cert3.png","name":"Linux Fundamentals","provider":"Coursera"}
+    ]
+
+    # Load current badge
+    badge = badges[st.session_state.badge_index]
+    try:
+        image = Image.open(badge["img"])
+        st.image(image, caption=f'{badge["name"]} — {badge["provider"]}', use_column_width=True)
+    except FileNotFoundError:
+        st.warning(f"Image {badge['img']} not found. Add it to your project folder.")
+
+    col1, col2 = st.columns(2)
+    if col1.button("Previous"):
+        st.session_state.badge_index = max(0, st.session_state.badge_index-1)
+    if col2.button("Next"):
+        st.session_state.badge_index = min(len(badges)-1, st.session_state.badge_index+1)
 
 # ------------------ FOOTER ------------------
 st.markdown(f"""
@@ -285,4 +308,3 @@ st.markdown(f"""
 © 2026 Mmatsie Sara Bopape • Cybersecurity Portfolio
 </footer>
 """, unsafe_allow_html=True)
-
