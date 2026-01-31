@@ -219,33 +219,43 @@ elif section == "Ask Me":
                       "Please contact Sara: bopapesarah2324@gmail.com")
         st.session_state.chat.append(("ai", answer))
         st.rerun()
-
+        
 # ------------------ GAME ------------------
 elif section == "Game":
     st.markdown("## 🎉 Cyber Card Match / Mini CTF 🎉")
+    st.write("A secret card is drawn. Pick a number (1–13). You win if your guess matches the AI card!")
+
+    # Initialize game state
     if "secret_card" not in st.session_state:
-        st.session_state.secret_card=random.randint(1,13)
-        st.session_state.played=False
-        st.session_state.win=False
-        st.session_state.reveal_clicked=False
+        st.session_state.secret_card = random.randint(1, 13)
+        st.session_state.played = False
+        st.session_state.win = False
+
     guess = st.number_input("Pick your card number (1–13)", 1, 13)
-    if st.button("Reveal Card"):
-        st.session_state.reveal_clicked=True
-        if random.random()<0.5: st.session_state.secret_card=guess
-        st.session_state.played=True
-    if st.session_state.reveal_clicked and st.session_state.played:
+
+    if st.button("Reveal Card") and not st.session_state.played:
+        st.session_state.played = True
+        # Generate a fair random secret card
+        st.session_state.secret_card = random.randint(1, 13)
+
         st.write(f"The AI card number is **{st.session_state.secret_card}**")
-        if guess==st.session_state.secret_card:
-            st.session_state.win=True
-            for _ in range(3): st.balloons()
-            st.success("🎊 You won! Your cyber instincts are strong 🛡️✨")
+
+        # Determine result
+        if guess == st.session_state.secret_card:
+            st.session_state.win = True
+            st.balloons()
+            st.success("🎊 Congratulations! You won! Your cyber instincts are strong 🛡️✨")
         else:
-            st.info("So close! Try again 💪")
+            # Slightly fun feedback if close
+            if abs(guess - st.session_state.secret_card) == 1:
+                st.info("So close! You were just 1 away! 💪")
+            else:
+                st.info("Not quite — try again! 💪")
+
     if st.button("Play Again"):
-        st.session_state.secret_card=random.randint(1,13)
-        st.session_state.played=False
-        st.session_state.win=False
-        st.session_state.reveal_clicked=False
+        st.session_state.secret_card = random.randint(1, 13)
+        st.session_state.played = False
+        st.session_state.win = False
         st.rerun()
 
 # ------------------ TOOLS ------------------
