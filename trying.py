@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+from PIL import Image
 
 # ---------------- THEME SWITCH ----------------
 theme = st.sidebar.selectbox("Choose Theme", ["Dark", "Light"])
@@ -19,8 +20,9 @@ else:
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Interactive Researcher Portfolio",
-    layout="wide"
+    page_title="MMATSIE SARA BOPAPE Portfolio",
+    page_icon="💻",
+    layout="wide",
 )
 
 # ---------------- CUSTOM CSS ----------------
@@ -29,6 +31,7 @@ st.markdown(f"""
 body {{
     background-color: {bg_color};
     color: {text_color};
+    font-family: 'Segoe UI', sans-serif;
 }}
 h1, h2, h3 {{
     color: {accent};
@@ -36,8 +39,8 @@ h1, h2, h3 {{
 .card {{
     background-color: {card_color};
     padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.2);
     margin-bottom: 25px;
 }}
 .badge {{
@@ -49,8 +52,52 @@ h1, h2, h3 {{
     color: {accent};
     font-size: 14px;
 }}
+.stButton>button {{
+    background-color: {accent};
+    color: {text_color};
+}}
 </style>
 """, unsafe_allow_html=True)
+
+# ---------------- PORTFOLIO DATA ----------------
+profile_info = {
+    "name": "MMATSIE SARA BOPAPE",
+    "title": "Computer Science Researcher | Cybersecurity & Data Science",
+    "university": "Walter Sisulu University",
+    "bio": (
+        "Final-year Computer Science student with strong interests in "
+        "cybersecurity, data science, and building secure, data-driven systems "
+        "that solve real-world problems."
+    ),
+    "skills": {
+        "Python": 85,
+        "Data Science": 80,
+        "Cybersecurity": 75,
+        "Research": 70,
+        "Problem Solving": 90
+    },
+    "projects": [
+        {
+            "title": "Career Guidance Decision Support System",
+            "desc": "Uses learner marks and career interests to provide recommendations. Built using Python & Streamlit."
+        },
+        {
+            "title": "Cybersecurity Case Study Analysis",
+            "desc": "Analysed real-world cyber attacks, identified threats and vulnerabilities, and proposed mitigation strategies."
+        }
+    ],
+    "research_journey": [
+        "2023 – Started BSc in Computer Science",
+        "2024 – Developed interest in cybersecurity & data analysis",
+        "2025 – Built data-driven and Streamlit applications",
+        "2026 – Aspiring cybersecurity & data science researcher"
+    ],
+    "future_questions": [
+        "How can data science improve career guidance accuracy?",
+        "How can secure systems protect learner data?",
+        "How can AI support education equity?"
+    ]
+}
 
 # ---------------- SIDEBAR NAV ----------------
 st.sidebar.title("Navigation")
@@ -69,91 +116,82 @@ page = st.sidebar.radio(
     ]
 )
 
-# ---------------- HOME ----------------
+# ---------------- FUNCTION TO LOAD IMAGE ----------------
+def load_image(path):
+    try:
+        img = Image.open(path)
+        return img
+    except Exception:
+        st.error(f"Profile image not found at {path}")
+        return None
+
+# ---------------- PAGES ----------------
 if page == "Home":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.image("profile.jpg", width=200)
-    st.title("MMATSIE SARA BOPAPE")
-    st.subheader("Computer Science Researcher | Cybersecurity & Data Science")
-    st.write("""
-    I am a final-year Computer Science student at **Walter Sisulu University**
-    with strong interests in **cybersecurity**, **data science**, and
-    building secure, data-driven systems that solve real-world problems.
-    """)
+    profile_img = load_image("profile.jpg")
+    if profile_img:
+        st.image(profile_img, width=200)
+    st.title(profile_info["name"])
+    st.subheader(profile_info["title"])
+    st.write(profile_info["bio"])
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- JOURNEY ----------------
 elif page == "Research Journey":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Research Journey")
-    st.markdown("""
-    **2023** – Started BSc in Computer Science  
-    **2024** – Developed interest in cybersecurity & data analysis  
-    **2025** – Built data-driven and Streamlit applications  
-    **2026** – Aspiring cybersecurity & data science researcher
-    """)
+    for item in profile_info["research_journey"]:
+        st.write(item)
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- PURPOSE ----------------
 elif page == "Purpose & Philosophy":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Problem I Want to Solve")
-    st.write("""
-    Many students and communities lack access to reliable career guidance
-    and secure digital platforms. I aim to build **secure, intelligent,
-    and data-driven systems** that support informed decision-making.
-    """)
+    st.write(
+        "Many students and communities lack access to reliable career guidance "
+        "and secure digital platforms. I aim to build secure, intelligent, "
+        "and data-driven systems that support informed decision-making."
+    )
     st.header("Research Philosophy")
-    st.write("""
-    I believe technology should be **ethical**, **secure**, and **data-informed**.
-    Combining cybersecurity and data science allows systems to be both
-    intelligent and trustworthy.
-    """)
+    st.write(
+        "I believe technology should be ethical, secure, and data-informed. "
+        "Combining cybersecurity and data science allows systems to be both "
+        "intelligent and trustworthy."
+    )
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- PROJECTS ----------------
 elif page == "Projects":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.header("Academic Projects")
-    st.markdown("""
-    **Career Guidance Decision Support System**  
-    - Uses learner marks and career interests  
-    - Applies data analysis for recommendations  
-    - Built using Python & Streamlit  
-
-    **Cybersecurity Case Study Analysis**  
-    - Analysed real-world cyber attacks  
-    - Identified threats and vulnerabilities  
-    - Proposed mitigation strategies
-    """)
+    st.header("Projects")
+    for p in profile_info["projects"]:
+        st.subheader(p["title"])
+        st.write(p["desc"])
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- DATA SCIENCE ----------------
 elif page == "Data Science Insights":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Data Science Example")
-    data = {"Field": ["IT", "Engineering", "Health", "Education", "Business"],
-            "Interest (%)": [30, 25, 20, 15, 10]}
+    data = {
+        "Field": ["IT", "Engineering", "Health", "Education", "Business"],
+        "Interest (%)": [30, 25, 20, 15, 10]
+    }
     df = pd.DataFrame(data)
     st.bar_chart(df.set_index("Field"))
     st.caption("Example of how data informs career guidance decisions.")
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- SKILLS ----------------
 elif page == "Skills":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Skills")
-    skills = ["Python", "Data Science", "Cybersecurity", "Research", "Problem Solving"]
-    values = [85, 80, 75, 70, 90]
+    skills = list(profile_info["skills"].keys())
+    values = list(profile_info["skills"].values())
     fig, ax = plt.subplots()
-    ax.bar(skills, values)
+    ax.bar(skills, values, color=accent)
     ax.set_ylim(0, 100)
     st.pyplot(fig)
     for s in skills:
         st.markdown(f"<span class='badge'>{s}</span>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- AI ----------------
 elif page == "AI: Ask About Me":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Ask Me Anything")
@@ -165,21 +203,19 @@ elif page == "AI: Ask About Me":
         elif "cyber" in q:
             st.success("Cybersecurity ensures the systems I build are secure and trustworthy.")
         else:
-            st.success("I am a Computer Science student focused on secure, data-driven solutions.")
+            st.info(
+                "Hmm… this is a question outside my current answers. "
+                "Sarah will personally reply to this question soon! ✨"
+            )
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- FUTURE ----------------
 elif page == "Future Research":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Future Research Questions")
-    st.markdown("""
-    - How can data science improve career guidance accuracy?
-    - How can secure systems protect learner data?
-    - How can AI support education equity?
-    """)
+    for q in profile_info["future_questions"]:
+        st.write(f"- {q}")
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- CONTACT ----------------
 elif page == "Contact":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("📫 Contact")
@@ -187,4 +223,4 @@ elif page == "Contact":
     st.write("Computer Science Department")
     st.markdown("</div>", unsafe_allow_html=True)
 
-st.caption("© 2026 | Interactive Researcher Portfolio")
+st.caption("© 2026 | MMATSIE SARA BOPAPE | Interactive Researcher Portfolio")
