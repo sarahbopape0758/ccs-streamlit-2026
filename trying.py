@@ -1,9 +1,9 @@
-# app.py
+# dynamic_portfolio.py
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib import rcParams
 from PIL import Image
+import os
 
 # ---------------- THEME SWITCH ----------------
 theme = st.sidebar.selectbox("Choose Theme", ["Dark", "Light"])
@@ -28,7 +28,7 @@ st.set_page_config(
     layout="wide",
 )
 
-# ---------------- GLOBAL CSS ----------------
+# ---------------- CSS ----------------
 st.markdown(f"""
 <style>
 body {{
@@ -45,6 +45,10 @@ h1, h2, h3 {{
     border-radius: 20px;
     box-shadow: 0 0 25px rgba(0,0,0,0.2);
     margin-bottom: 25px;
+    transition: all 0.3s ease;
+}}
+.card:hover {{
+    box-shadow: 0 0 40px {accent};
 }}
 .badge {{
     display: inline-block;
@@ -58,178 +62,131 @@ h1, h2, h3 {{
 .stButton>button {{
     background-color: {accent};
     color: {text_color};
+    border-radius: 10px;
+    padding: 8px 20px;
 }}
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- PORTFOLIO DATA ----------------
-profile_info = {
+# ---------------- DATA ----------------
+profile = {
     "name": "MMATSIE SARA BOPAPE",
     "title": "Computer Science Researcher | Cybersecurity & Data Science",
-    "university": "Walter Sisulu University",
-    "bio": (
-        "Final-year Computer Science student with strong interests in "
-        "cybersecurity, data science, and building secure, data-driven systems "
-        "that solve real-world problems."
-    ),
-    "skills": {
-        "Python": 85,
-        "Data Science": 80,
-        "Cybersecurity": 75,
-        "Research": 70,
-        "Problem Solving": 90
-    },
-    "projects": [
-        {
-            "title": "Career Guidance Decision Support System",
-            "desc": "Uses learner marks and career interests to provide recommendations. Built using Python & Streamlit."
-        },
-        {
-            "title": "Cybersecurity Case Study Analysis",
-            "desc": "Analysed real-world cyber attacks, identified threats and vulnerabilities, and proposed mitigation strategies."
-        }
-    ],
-    "research_journey": [
+    "bio": "Final-year CS student passionate about cybersecurity and data science. Building intelligent, secure, data-driven systems.",
+    "profile_image": "profile.jpg",
+    "skills": {"Python":85,"Data Science":80,"Cybersecurity":75,"Research":70,"Problem Solving":90},
+    "journey": [
         "2023 – Started BSc in Computer Science",
         "2024 – Developed interest in cybersecurity & data analysis",
         "2025 – Built data-driven and Streamlit applications",
         "2026 – Aspiring cybersecurity & data science researcher"
     ],
-    "future_questions": [
-        "How can data science improve career guidance accuracy?",
-        "How can secure systems protect learner data?",
-        "How can AI support education equity?"
+    "projects_folder": "projects",  # folder with project images + .txt descriptions
+    "future_research": [
+        "Improve accuracy of career guidance using AI",
+        "Protect learner data with secure systems",
+        "Use AI to support education equity"
     ]
 }
 
-# ---------------- SIDEBAR NAV ----------------
-st.sidebar.title("Navigation")
-page = st.sidebar.radio(
-    "Explore",
-    [
-        "Home",
-        "Research Journey",
-        "Purpose & Philosophy",
-        "Projects",
-        "Data Science Insights",
-        "Skills",
-        "AI: Ask About Me",
-        "Future Research",
-        "Contact"
-    ]
-)
-
-# ---------------- FUNCTION TO LOAD IMAGE ----------------
-def load_image(path):
-    try:
-        img = Image.open(path)
-        return img
-    except Exception:
-        st.error(f"Profile image not found at {path}")
+# ---------------- FUNCTIONS ----------------
+def load_image(path, width=None):
+    if os.path.exists(path):
+        return Image.open(path)
+    else:
+        st.error(f"Image not found: {path}")
         return None
 
-# ---------------- FUNCTION TO PLOT SKILLS ----------------
-def plot_skills(skills_dict):
-    skills = list(skills_dict.keys())
-    values = list(skills_dict.values())
+def plot_skills(skills):
     fig, ax = plt.subplots()
     fig.patch.set_facecolor(bg_color)
     ax.set_facecolor(bg_color)
-    ax.bar(skills, values, color=accent)
-    ax.set_ylim(0, 100)
+    names = list(skills.keys())
+    vals = list(skills.values())
+    ax.bar(names, vals, color=accent)
+    ax.set_ylim(0,100)
     ax.tick_params(colors=text_color, labelcolor=text_color)
     for spine in ax.spines.values():
         spine.set_edgecolor(text_color)
     return fig
 
+def load_projects(folder):
+    projects = []
+    if os.path.exists(folder):
+        for f in os.listdir(folder):
+            if f.endswith(".txt"):
+                title = f.replace(".txt","").replace("_"," ").title()
+                desc = open(os.path.join(folder,f), "r").read()
+                image_file = os.path.join(folder, f.replace(".txt",".jpg"))
+                projects.append({"title":title,"desc":desc,"image":image_file})
+    return projects
+
+# ---------------- SIDEBAR NAV ----------------
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Explore", ["Home","Journey","Projects","Skills","AI Q&A","Future Research","Contact"])
+
 # ---------------- PAGES ----------------
-if page == "Home":
+if page=="Home":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
-    profile_img = load_image("profile.jpg")
-    if profile_img:
-        st.image(profile_img, width=200)
-    st.title(profile_info["name"])
-    st.subheader(profile_info["title"])
-    st.write(profile_info["bio"])
+    img = load_image(profile["profile_image"],200)
+    if img: st.image(img, width=200)
+    st.title(profile["name"])
+    st.subheader(profile["title"])
+    st.write(profile["bio"])
     st.markdown("</div>", unsafe_allow_html=True)
 
-elif page == "Research Journey":
+elif page=="Journey":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Research Journey")
-    for item in profile_info["research_journey"]:
-        st.write(item)
+    for item in profile["journey"]:
+        st.write(f"- {item}")
     st.markdown("</div>", unsafe_allow_html=True)
 
-elif page == "Purpose & Philosophy":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.header("Problem I Want to Solve")
-    st.write(
-        "Many students and communities lack access to reliable career guidance "
-        "and secure digital platforms. I aim to build secure, intelligent, "
-        "and data-driven systems that support informed decision-making."
-    )
-    st.header("Research Philosophy")
-    st.write(
-        "I believe technology should be ethical, secure, and data-informed. "
-        "Combining cybersecurity and data science allows systems to be both "
-        "intelligent and trustworthy."
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
-
-elif page == "Projects":
+elif page=="Projects":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Projects")
-    for p in profile_info["projects"]:
+    projects = load_projects(profile["projects_folder"])
+    for p in projects:
         st.subheader(p["title"])
+        if os.path.exists(p["image"]):
+            st.image(load_image(p["image"]), width=300)
         st.write(p["desc"])
     st.markdown("</div>", unsafe_allow_html=True)
 
-elif page == "Data Science Insights":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.header("Data Science Example")
-    data = {"Field": ["IT", "Engineering", "Health", "Education", "Business"],
-            "Interest (%)": [30, 25, 20, 15, 10]}
-    df = pd.DataFrame(data)
-    st.bar_chart(df.set_index("Field"), use_container_width=True)
-    st.caption("Example of how data informs career guidance decisions.")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-elif page == "Skills":
+elif page=="Skills":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Skills")
-    fig = plot_skills(profile_info["skills"])
-    st.pyplot(fig)
-    for s in profile_info["skills"]:
+    st.pyplot(plot_skills(profile["skills"]))
+    for s in profile["skills"]:
         st.markdown(f"<span class='badge'>{s}</span>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-elif page == "AI: Ask About Me":
+elif page=="AI Q&A":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Ask Me Anything")
     q = st.text_input("Ask a question about my work")
     if q:
-        q = q.lower()
-        if "data" in q:
+        ql = q.lower()
+        if "data" in ql:
             st.success("I use data science to analyse patterns and support evidence-based decisions.")
-        elif "cyber" in q:
+        elif "cyber" in ql:
             st.success("Cybersecurity ensures the systems I build are secure and trustworthy.")
         else:
             st.info("Hmm… this is a question outside my current answers. Sarah will personally reply to this question soon! ✨")
     st.markdown("</div>", unsafe_allow_html=True)
 
-elif page == "Future Research":
+elif page=="Future Research":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.header("Future Research Questions")
-    for q in profile_info["future_questions"]:
-        st.write(f"- {q}")
+    st.header("Future Research")
+    for f in profile["future_research"]:
+        st.write(f"- {f}")
     st.markdown("</div>", unsafe_allow_html=True)
 
-elif page == "Contact":
+elif page=="Contact":
     st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.header("📫 Contact")
+    st.header("Contact")
     st.write("Walter Sisulu University")
     st.write("Computer Science Department")
     st.markdown("</div>", unsafe_allow_html=True)
 
-st.caption("© 2026 | MMATSIE SARA BOPAPE | Interactive Researcher Portfolio")
-
+st.caption("© 2026 | MMATSIE SARA BOPAPE | Interactive Portfolio")
