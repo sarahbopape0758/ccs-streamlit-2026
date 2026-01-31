@@ -1,11 +1,12 @@
 # css2026-sarah-bopape-portfolio
-# Ultimate Streamlit Portfolio for Mmatsie Sara Bopape
+# Streamlit Portfolio for Mmatsie Sara Bopape - Fixed (No plotly)
 
 import streamlit as st
 import random
+import hashlib
 from datetime import datetime
-import plotly.graph_objects as go
-import base64
+from PIL import Image, ImageDraw, ImageFont
+import io
 
 # ------------------ PAGE CONFIG ------------------
 st.set_page_config(
@@ -151,7 +152,6 @@ elif section == "Projects":
     </div>
     """, unsafe_allow_html=True)
     
-    # Interactive Hill Cipher demo
     st.markdown("<h4>Try a quick encryption demo:</h4>", unsafe_allow_html=True)
     msg = st.text_input("Message to encrypt")
     key = st.number_input("Shift key (1-25)", 1, 25, 3)
@@ -163,21 +163,22 @@ elif section == "Projects":
 # ------------------ SKILLS ------------------
 elif section == "Skills":
     st.markdown("<h2>My Skills</h2>", unsafe_allow_html=True)
-
-    categories = ['Python', 'Java', 'C++', 'Networking', 'Linux', 'Cybersecurity']
-    values = [90, 70, 80, 85, 75, 95]
-    fig = go.Figure()
-    fig.add_trace(go.Scatterpolar(r=values, theta=categories, fill='toself', name='Skill Level'))
-    fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0,100])))
-    st.plotly_chart(fig, use_container_width=True)
+    skills = {
+        "Python": 90,
+        "Java": 70,
+        "C++": 80,
+        "Networking": 85,
+        "Linux": 75,
+        "Cybersecurity": 95
+    }
+    for skill, value in skills.items():
+        st.write(f"{skill}")
+        st.progress(value)
 
 # ------------------ CV ------------------
 elif section == "CV":
     st.markdown("## Download My CV")
-    st.markdown(
-        "<div class='card'>My CV is available below. Click the button to download it.</div>",
-        unsafe_allow_html=True,
-    )
+    st.markdown("<div class='card'>Click below to download my CV.</div>", unsafe_allow_html=True)
     try:
         with open("Mmatsie_Sara_Bopape_CV.pdf", "rb") as f:
             cv_bytes = f.read()
@@ -188,27 +189,26 @@ elif section == "CV":
             mime="application/pdf",
         )
     except FileNotFoundError:
-        st.error("CV file not found. Please include it in the project folder.")
+        st.error("CV file not found. Include it in the project folder.")
 
 # ------------------ CHAT ------------------
 elif section == "Ask Me":
     st.markdown("## Ask Me Anything")
     knowledge = {
-        "who is sarah": "Mmatsie Sara Bopape is a final-year BSc Computer Science student at Walter Sisulu University with a strong interest in cybersecurity and networking.",
-        "who is mmatsie": "Mmatsie Sara Bopape is a cybersecurity enthusiast and final-year Computer Science student at Walter Sisulu University.",
+        "who is sarah": "Mmatsie Sara Bopape is a final-year BSc Computer Science student at Walter Sisulu University.",
+        "who is mmatsie": "Mmatsie Sara Bopape is a cybersecurity enthusiast and final-year Computer Science student.",
         "when did she matriculate": "She matriculated in 2022 at Eqinisweni Secondary School.",
-        "what does she study": "She studies BSc Computer Science at Walter Sisulu University.",
-        "what are her skills": "Her skills include cybersecurity fundamentals, networking, programming (C++, Java, Python, JavaScript), and Linux.",
-        "what is cybersecurity": "Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks."
+        "what does she study": "BSc Computer Science at Walter Sisulu University.",
+        "what are her skills": "Cybersecurity, networking, C++, Java, Python, JavaScript, Linux.",
     }
     if "chat" not in st.session_state: st.session_state.chat=[]
     for role, msg in st.session_state.chat:
         st.markdown(f'<div class="message {role}">{msg}</div>', unsafe_allow_html=True)
-    q = st.text_input("Ask a cybersecurity question or about me")
+    q = st.text_input("Ask a question about me or cybersecurity")
     if st.button("Send") and q:
         st.session_state.chat.append(("user", q))
         answer = next((knowledge[k] for k in knowledge if k in q.lower()), 
-                      "This question is best directed to Sarah. Contact: 📧 bopapesarah2324@gmail.com")
+                      "Please contact Sara: bopapesarah2324@gmail.com")
         st.session_state.chat.append(("ai", answer))
         st.rerun()
 
@@ -229,7 +229,7 @@ elif section == "Game":
         st.write(f"The AI card number is **{st.session_state.secret_card}**")
         if guess==st.session_state.secret_card:
             st.session_state.win=True
-            st.balloons()
+            for _ in range(3): st.balloons()
             st.success("🎊 You won! Your cyber instincts are strong 🛡️✨")
         else:
             st.info("So close! Try again 💪")
@@ -243,10 +243,8 @@ elif section == "Game":
 # ------------------ TOOLS ------------------
 elif section=="Tools":
     st.markdown("## 🔧 Cybersecurity Tools & Demos")
-    # Hashing demo
     msg = st.text_input("Enter text to hash (SHA256)")
     if st.button("Hash Text") and msg:
-        import hashlib
         h = hashlib.sha256(msg.encode()).hexdigest()
         st.success(f"SHA256 Hash: {h}")
 
@@ -262,21 +260,24 @@ elif section=="Timeline":
     ]
     for year, event in timeline_events:
         st.markdown(f"**{year}** — {event}")
+        if st.button(f"Celebrate {year} milestone"):
+            st.balloons()
+            st.success(f"🎉 Milestone {year} celebrated!")
 
 # ------------------ BADGES ------------------
 elif section=="Badges":
     st.markdown("## 🏆 Earn Your Badge")
     badge_text = "Visited Sara's Cybersecurity Portfolio"
     if st.button("Download Badge"):
-        from PIL import Image, ImageDraw, ImageFont
         img = Image.new('RGB', (400,200), color=(44,62,80))
         d = ImageDraw.Draw(img)
         font = ImageFont.load_default()
         d.text((20,80), badge_text, fill=(255,255,255), font=font)
-        import io
         buf = io.BytesIO()
         img.save(buf, format='PNG')
         st.download_button("Download PNG", buf.getvalue(), file_name="badge.png", mime="image/png")
+        for _ in range(2): st.balloons()
+        st.success("🎊 Badge downloaded! Celebrate your visit!")
 
 # ------------------ FOOTER ------------------
 st.markdown(f"""
@@ -284,3 +285,4 @@ st.markdown(f"""
 © 2026 Mmatsie Sara Bopape • Cybersecurity Portfolio
 </footer>
 """, unsafe_allow_html=True)
+
