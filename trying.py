@@ -80,19 +80,43 @@ with st.sidebar:
     st.markdown("---")
     section = st.radio("Navigate", ["Home", "About", "Projects", "Skills", "CV", "Ask Me", "Game"])
 
-# ------------------ HERO ------------------
-st.markdown("""
-<div class="hero">
-  <h1>Mmatsie Sara Bopape</h1>
-  <h3>Cybersecurity Enthusiast & Final-Year Computer Science Student</h3>
-  <p style="max-width:850px">
-  Final year BSc Computer Science student at Walter Sisulu University, passionate about cybersecurity,
-  networking, and building innovative solutions to complex security challenges.
-  </p>
-</div>
-""", unsafe_allow_html=True)
+# ------------------ HERO (HOME ONLY) ------------------
 
 # ------------------ HOME ------------------
+if section == "Home":
+    st.markdown("""
+    <div class=\"hero\">
+      <h1>Mmatsie Sara Bopape</h1>
+      <h3>Cybersecurity Enthusiast & Final-Year Computer Science Student</h3>
+      <p style=\"max-width:850px\">
+      Final year BSc Computer Science student at Walter Sisulu University, passionate about cybersecurity,
+      networking, and building innovative solutions to complex security challenges.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class=\"card\">
+    <h2>Welcome</h2>
+    <p>
+    This interactive portfolio showcases my academic journey, technical skills, certifications,
+    and projects in cybersecurity, networking, and software development.
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class=\"card kpi\">
+      <div><h3>2026</h3><p>Final Year</p></div>
+      <div><h3>10+</h3><p>Certifications</p></div>
+      <div><h3>6+</h3><p>Languages</p></div>
+    </div>
+    """, unsafe_allow_html=True)
+
+elif section != "Home":
+    pass
+
+
 if section == "Home":
     col1, col2 = st.columns([2, 1])
     with col1:
@@ -192,22 +216,33 @@ elif section == "Ask Me":
 
 # ------------------ GAME ------------------
 elif section == "Game":
-    st.markdown("## Cyber Cards vs AI")
-    st.write("Draw a card. Highest number wins against the AI.")
-    if st.button("Draw Card"):
-        user = random.randint(1, 13)
-        ai = random.randint(1, 13)
-        st.write(f"You drew **{user}** | AI drew **{ai}**")
-        if user > ai:
-            st.success("You win! 🏆")
-        elif user < ai:
-            st.error("AI wins 🤖")
+    st.markdown("## Cyber Card Match vs AI")
+    st.write("A card is drawn secretly. Guess the number (1–13). Match it to win.")
+
+    if "secret_card" not in st.session_state:
+        st.session_state.secret_card = random.randint(1, 13)
+        st.session_state.played = False
+
+    guess = st.number_input("Enter your card number", min_value=1, max_value=13, step=1)
+
+    if st.button("Reveal Card") and not st.session_state.played:
+        st.session_state.played = True
+        st.write(f"AI card number was **{st.session_state.secret_card}**")
+        if guess == st.session_state.secret_card:
+            st.success("Perfect match! You win 🏆")
         else:
-            st.info("Draw!")
+            st.error("No match. You lose ❌")
+
+    if st.button("Play Again"):
+        st.session_state.secret_card = random.randint(1, 13)
+        st.session_state.played = False
+        st.rerun()
 
 # ------------------ FOOTER ------------------
+
 st.markdown(f"""
 <footer>
 © {datetime.now().year} Mmatsie Sara Bopape • Cybersecurity Portfolio
 </footer>
 """, unsafe_allow_html=True)
+
