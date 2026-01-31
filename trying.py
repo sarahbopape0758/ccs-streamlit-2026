@@ -233,9 +233,8 @@ elif section == "Ask Me":
         st.rerun()
 
 # ------------------ GAME ------------------
-
 elif section == "Game":
-    st.markdown("##  Cyber Card Match vs AI ")
+    st.markdown("## 🎉 Cyber Card Match vs AI 🎉")
     st.write("A secret card is drawn. Choose a number (1–13). You **can win** — and when you do, enjoy the celebration! 🎈")
 
     # Initialize game state
@@ -246,13 +245,21 @@ elif section == "Game":
 
     guess = st.number_input("Pick your card number", min_value=1, max_value=13, step=1)
 
-    if st.button("Reveal Card") and not st.session_state.played:
-        st.session_state.played = True
+    # Track button clicks properly
+    if "reveal_clicked" not in st.session_state:
+        st.session_state.reveal_clicked = False
 
-        # Friendly logic: slightly increases chance to win
+    if st.button("Reveal Card"):
+        st.session_state.reveal_clicked = True
+
+        # Slightly increase chance to win
         if random.random() < 0.5:
             st.session_state.secret_card = guess
 
+        st.session_state.played = True
+
+    # Display result after button clicked
+    if st.session_state.reveal_clicked and st.session_state.played:
         st.write(f"The AI card number is **{st.session_state.secret_card}**")
 
         if guess == st.session_state.secret_card:
@@ -266,7 +273,9 @@ elif section == "Game":
         st.session_state.secret_card = random.randint(1, 13)
         st.session_state.played = False
         st.session_state.win = False
+        st.session_state.reveal_clicked = False
         st.rerun()
+
 
 # ------------------ FOOTER ------------------
 
