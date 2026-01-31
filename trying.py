@@ -202,19 +202,46 @@ elif section == "CV":
 # ------------------ CHAT ------------------
 elif section == "Ask Me":
     st.markdown("## Ask Me Anything")
+
+    # Predefined Q&A knowledge base
+    knowledge = {
+        "who is sarah": "Mmatsie Sara Bopape is a final-year BSc Computer Science student at Walter Sisulu University with a strong interest in cybersecurity and networking.",
+        "who is mmatsie": "Mmatsie Sara Bopape is a cybersecurity enthusiast and final-year Computer Science student at Walter Sisulu University.",
+        "when did she matriculate": "She matriculated in 2022 at Eqinisweni Secondary School.",
+        "what does she study": "She studies BSc Computer Science at Walter Sisulu University.",
+        "what are her skills": "Her skills include cybersecurity fundamentals, networking, programming (C++, Java, Python, JavaScript), and Linux.",
+    }
+
     if "chat" not in st.session_state:
         st.session_state.chat = []
 
     for role, msg in st.session_state.chat:
         st.markdown(f'<div class="message {role}">{msg}</div>', unsafe_allow_html=True)
 
-    q = st.text_input("Ask about my skills, projects, or cybersecurity interests")
+    q = st.text_input("Ask about my skills, education, or background")
+
     if st.button("Send") and q:
         st.session_state.chat.append(("user", q))
-        st.session_state.chat.append(("ai", "I am passionate about cybersecurity, networking, and secure systems design."))
+        key = q.lower().strip()
+
+        answer = None
+        for k in knowledge:
+            if k in key:
+                answer = knowledge[k]
+                break
+
+        if answer is None:
+            answer = (
+                "This question is best directed to Sarah herself. "
+                "For more information, please contact her at "
+                "📧 bopapesarah2324@gmail.com or connect via LinkedIn/GitHub listed in this portfolio."
+            )
+
+        st.session_state.chat.append(("ai", answer))
         st.rerun()
 
 # ------------------ GAME ------------------
+
 elif section == "Game":
     st.markdown("## Cyber Card Match vs AI")
     st.write("A card is drawn secretly. Guess the number (1–13). Match it to win.")
@@ -242,7 +269,6 @@ elif section == "Game":
 
 st.markdown(f"""
 <footer>
-© {datetime.now().year} Mmatsie Sara Bopape • Cybersecurity Portfolio
+© 2026 Mmatsie Sara Bopape • Cybersecurity Portfolio
 </footer>
 """, unsafe_allow_html=True)
-
