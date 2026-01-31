@@ -1,10 +1,11 @@
 # css2026-sarah-bopape-portfolio
-# Premium Streamlit portfolio for Mmatsie Sara Bopape
+# Ultimate Streamlit Portfolio for Mmatsie Sara Bopape
 
 import streamlit as st
-import time
 import random
 from datetime import datetime
+import plotly.graph_objects as go
+import base64
 
 # ------------------ PAGE CONFIG ------------------
 st.set_page_config(
@@ -80,9 +81,7 @@ with st.sidebar:
         st.rerun()
 
     st.markdown("---")
-    section = st.radio("Navigate", ["Home", "About", "Projects", "Skills", "CV", "Ask Me", "Game"])
-
-# ------------------ HERO (HOME ONLY) ------------------
+    section = st.radio("Navigate", ["Home", "About", "Projects", "Skills", "CV", "Ask Me", "Game", "Tools", "Timeline", "Badges"])
 
 # ------------------ HOME ------------------
 if section == "Home":
@@ -151,23 +150,26 @@ elif section == "Projects":
     Cryptography tool using matrix mathematics and modular arithmetic.
     </div>
     """, unsafe_allow_html=True)
+    
+    # Interactive Hill Cipher demo
+    st.markdown("<h4>Try a quick encryption demo:</h4>", unsafe_allow_html=True)
+    msg = st.text_input("Message to encrypt")
+    key = st.number_input("Shift key (1-25)", 1, 25, 3)
+    if st.button("Encrypt") and msg:
+        encrypted = ''.join([chr(((ord(c)-65+key)%26)+65) if c.isupper() else
+                             chr(((ord(c)-97+key)%26)+97) if c.islower() else c for c in msg])
+        st.success(f"Encrypted message: {encrypted}")
 
 # ------------------ SKILLS ------------------
 elif section == "Skills":
-    st.markdown("""
-    <div class="card">
-    <h3>Programming</h3>
-    C++, Java, JavaScript, Python, HTML, CSS
-    </div>
-    <div class="card">
-    <h3>Tools & Technologies</h3>
-    GitHub, Linux CLI, Cisco Packet Tracer, Wireshark
-    </div>
-    <div class="card">
-    <h3>Languages</h3>
-    Sepedi (Native), English, Zulu, Xhosa, Venda, Tsonga
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<h2>My Skills</h2>", unsafe_allow_html=True)
+
+    categories = ['Python', 'Java', 'C++', 'Networking', 'Linux', 'Cybersecurity']
+    values = [90, 70, 80, 85, 75, 95]
+    fig = go.Figure()
+    fig.add_trace(go.Scatterpolar(r=values, theta=categories, fill='toself', name='Skill Level'))
+    fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0,100])))
+    st.plotly_chart(fig, use_container_width=True)
 
 # ------------------ CV ------------------
 elif section == "CV":
@@ -176,12 +178,9 @@ elif section == "CV":
         "<div class='card'>My CV is available below. Click the button to download it.</div>",
         unsafe_allow_html=True,
     )
-
-    # Load CV file from repository
     try:
         with open("Mmatsie_Sara_Bopape_CV.pdf", "rb") as f:
             cv_bytes = f.read()
-
         st.download_button(
             label="📄 Download CV (PDF)",
             data=cv_bytes,
@@ -189,97 +188,97 @@ elif section == "CV":
             mime="application/pdf",
         )
     except FileNotFoundError:
-        st.error("CV file not found. Please make sure 'Mmatsie_Sara_Bopape_CV.pdf' is included in the project repository.")
+        st.error("CV file not found. Please include it in the project folder.")
 
 # ------------------ CHAT ------------------
 elif section == "Ask Me":
     st.markdown("## Ask Me Anything")
-
-    # Predefined Q&A knowledge base
     knowledge = {
         "who is sarah": "Mmatsie Sara Bopape is a final-year BSc Computer Science student at Walter Sisulu University with a strong interest in cybersecurity and networking.",
         "who is mmatsie": "Mmatsie Sara Bopape is a cybersecurity enthusiast and final-year Computer Science student at Walter Sisulu University.",
         "when did she matriculate": "She matriculated in 2022 at Eqinisweni Secondary School.",
         "what does she study": "She studies BSc Computer Science at Walter Sisulu University.",
         "what are her skills": "Her skills include cybersecurity fundamentals, networking, programming (C++, Java, Python, JavaScript), and Linux.",
+        "what is cybersecurity": "Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks."
     }
-
-    if "chat" not in st.session_state:
-        st.session_state.chat = []
-
+    if "chat" not in st.session_state: st.session_state.chat=[]
     for role, msg in st.session_state.chat:
         st.markdown(f'<div class="message {role}">{msg}</div>', unsafe_allow_html=True)
-
-    q = st.text_input("Ask about my skills, education, or background")
-
+    q = st.text_input("Ask a cybersecurity question or about me")
     if st.button("Send") and q:
         st.session_state.chat.append(("user", q))
-        key = q.lower().strip()
-
-        answer = None
-        for k in knowledge:
-            if k in key:
-                answer = knowledge[k]
-                break
-
-        if answer is None:
-            answer = (
-                "This question is best directed to Sarah herself. "
-                "For more information, please contact her at "
-                "📧 bopapesarah2324@gmail.com or connect via LinkedIn/GitHub listed in this portfolio."
-            )
-
+        answer = next((knowledge[k] for k in knowledge if k in q.lower()), 
+                      "This question is best directed to Sarah. Contact: 📧 bopapesarah2324@gmail.com")
         st.session_state.chat.append(("ai", answer))
         st.rerun()
 
 # ------------------ GAME ------------------
 elif section == "Game":
-    st.markdown("## 🎉 Cyber Card Match vs AI 🎉")
-    st.write("A secret card is drawn. Choose a number (1–13). You **can win** — and when you do, enjoy the celebration! 🎈")
-
-    # Initialize game state
+    st.markdown("## 🎉 Cyber Card Match / Mini CTF 🎉")
     if "secret_card" not in st.session_state:
-        st.session_state.secret_card = random.randint(1, 13)
-        st.session_state.played = False
-        st.session_state.win = False
-
-    guess = st.number_input("Pick your card number", min_value=1, max_value=13, step=1)
-
-    # Track button clicks properly
-    if "reveal_clicked" not in st.session_state:
-        st.session_state.reveal_clicked = False
-
+        st.session_state.secret_card=random.randint(1,13)
+        st.session_state.played=False
+        st.session_state.win=False
+        st.session_state.reveal_clicked=False
+    guess = st.number_input("Pick your card number (1–13)", 1, 13)
     if st.button("Reveal Card"):
-        st.session_state.reveal_clicked = True
-
-        # Slightly increase chance to win
-        if random.random() < 0.5:
-            st.session_state.secret_card = guess
-
-        st.session_state.played = True
-
-    # Display result after button clicked
+        st.session_state.reveal_clicked=True
+        if random.random()<0.5: st.session_state.secret_card=guess
+        st.session_state.played=True
     if st.session_state.reveal_clicked and st.session_state.played:
         st.write(f"The AI card number is **{st.session_state.secret_card}**")
-
-        if guess == st.session_state.secret_card:
-            st.session_state.win = True
+        if guess==st.session_state.secret_card:
+            st.session_state.win=True
             st.balloons()
-            st.success("🎊 Congratulations! You won! Your cyber instincts are strong 🛡️✨")
+            st.success("🎊 You won! Your cyber instincts are strong 🛡️✨")
         else:
-            st.info("So close! Try again — champions never quit 💪")
-
+            st.info("So close! Try again 💪")
     if st.button("Play Again"):
-        st.session_state.secret_card = random.randint(1, 13)
-        st.session_state.played = False
-        st.session_state.win = False
-        st.session_state.reveal_clicked = False
+        st.session_state.secret_card=random.randint(1,13)
+        st.session_state.played=False
+        st.session_state.win=False
+        st.session_state.reveal_clicked=False
         st.rerun()
 
+# ------------------ TOOLS ------------------
+elif section=="Tools":
+    st.markdown("## 🔧 Cybersecurity Tools & Demos")
+    # Hashing demo
+    msg = st.text_input("Enter text to hash (SHA256)")
+    if st.button("Hash Text") and msg:
+        import hashlib
+        h = hashlib.sha256(msg.encode()).hexdigest()
+        st.success(f"SHA256 Hash: {h}")
+
+# ------------------ TIMELINE ------------------
+elif section=="Timeline":
+    st.markdown("## 📅 My Journey")
+    timeline_events = [
+        ("2022", "Matriculated at Eqinisweni Secondary School"),
+        ("2023", "Started BSc Computer Science"),
+        ("2024", "First Internship / Project"),
+        ("2025", "Tutor & IEC Assistant"),
+        ("2026", "Final Year & Portfolio Showcase")
+    ]
+    for year, event in timeline_events:
+        st.markdown(f"**{year}** — {event}")
+
+# ------------------ BADGES ------------------
+elif section=="Badges":
+    st.markdown("## 🏆 Earn Your Badge")
+    badge_text = "Visited Sara's Cybersecurity Portfolio"
+    if st.button("Download Badge"):
+        from PIL import Image, ImageDraw, ImageFont
+        img = Image.new('RGB', (400,200), color=(44,62,80))
+        d = ImageDraw.Draw(img)
+        font = ImageFont.load_default()
+        d.text((20,80), badge_text, fill=(255,255,255), font=font)
+        import io
+        buf = io.BytesIO()
+        img.save(buf, format='PNG')
+        st.download_button("Download PNG", buf.getvalue(), file_name="badge.png", mime="image/png")
 
 # ------------------ FOOTER ------------------
-
-
 st.markdown(f"""
 <footer>
 © 2026 Mmatsie Sara Bopape • Cybersecurity Portfolio
