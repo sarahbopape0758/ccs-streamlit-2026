@@ -1,5 +1,5 @@
-# css2026-researcher-portfolio
-# Prize-ready Streamlit app: dynamic portfolio, dark/light mode, CV upload, chat assistant, visuals, and a mini game
+# css2026-sarah-bopape-portfolio
+# Premium Streamlit portfolio for Mmatsie Sara Bopape
 
 import streamlit as st
 import time
@@ -8,8 +8,8 @@ from datetime import datetime
 
 # ------------------ PAGE CONFIG ------------------
 st.set_page_config(
-    page_title="css2026 • Research Portfolio",
-    page_icon="🧠",
+    page_title="Mmatsie Sara Bopape | Cybersecurity Portfolio",
+    page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -21,7 +21,6 @@ if "theme" not in st.session_state:
 THEMES = {
     "dark": {
         "bg": "#0b0f14",
-        "panel": "#121826",
         "text": "#e6e8eb",
         "muted": "#9aa4b2",
         "accent": "#7c9cff",
@@ -30,8 +29,7 @@ THEMES = {
         "shadow": "0 20px 40px rgba(0,0,0,.45)",
     },
     "light": {
-        "bg": "#f7fafc",
-        "panel": "#ffffff",
+        "bg": "#f8fafc",
         "text": "#0f172a",
         "muted": "#475569",
         "accent": "#4f46e5",
@@ -46,81 +44,50 @@ T = THEMES[st.session_state.theme]
 # ------------------ GLOBAL CSS ------------------
 st.markdown(f"""
 <style>
-:root {{
-  --bg: {T['bg']};
-  --panel: {T['panel']};
-  --text: {T['text']};
-  --muted: {T['muted']};
-  --accent: {T['accent']};
-  --accent2: {T['accent2']};
-  --card: {T['card']};
-  --shadow: {T['shadow']};
-}}
+html, body, .stApp {{ background:{T['bg']}; color:{T['text']}; }}
 
-html, body, .stApp {{ background: var(--bg); color: var(--text); }}
-
-/* Headline */
 .hero {{
-  background: radial-gradient(1200px 600px at 10% -20%, rgba(124,156,255,.15), transparent 40%),
-              radial-gradient(900px 500px at 90% -10%, rgba(34,211,238,.18), transparent 40%),
-              linear-gradient(180deg, rgba(15,23,42,.6), rgba(15,23,42,.2));
-  border: 1px solid rgba(148,163,184,.15);
-  border-radius: 24px;
-  padding: 36px;
-  box-shadow: var(--shadow);
-}}
-
-.badge {{
-  display: inline-block; padding: 6px 10px; border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  color: white; font-weight: 600; font-size: 12px; letter-spacing:.3px;
+  border-radius:24px; padding:40px;
+  background: radial-gradient(800px 400px at 10% -20%, rgba(124,156,255,.18), transparent 40%),
+              radial-gradient(800px 400px at 90% -10%, rgba(34,211,238,.18), transparent 40%);
+  box-shadow:{T['shadow']};
 }}
 
 .card {{
-  background: var(--card);
-  border: 1px solid rgba(148,163,184,.15);
-  border-radius: 20px;
-  padding: 22px;
-  box-shadow: var(--shadow);
+  background:{T['card']};
+  border-radius:20px; padding:22px;
+  box-shadow:{T['shadow']}; margin-bottom:20px;
 }}
 
 .kpi {{ display:flex; gap:14px; }}
-.kpi .box {{ flex:1; padding:16px; border-radius:16px; background: linear-gradient(180deg, rgba(124,156,255,.08), rgba(34,211,238,.08)); border:1px solid rgba(148,163,184,.18); }}
-.kpi h3 {{ margin:0; font-size:28px; }}
-.kpi p {{ margin:0; color:var(--muted); }}
+.kpi div {{ flex:1; padding:16px; border-radius:16px; background:rgba(124,156,255,.12); }}
 
-.nav a {{ text-decoration:none; color:var(--text); }}
+.chat {{ height:420px; overflow-y:auto; }}
+.message.user {{ background:rgba(124,156,255,.15); padding:12px; border-radius:14px; margin-bottom:10px; }}
+.message.ai {{ background:rgba(34,211,238,.15); padding:12px; border-radius:14px; margin-bottom:10px; }}
 
-.chat {{ height: 420px; overflow-y:auto; }}
-.message.user {{ background: rgba(124,156,255,.12); padding:12px 14px; border-radius:14px; margin-bottom:10px; }}
-.message.ai {{ background: rgba(34,211,238,.12); padding:12px 14px; border-radius:14px; margin-bottom:10px; }}
-
-footer {{ color:var(--muted); text-align:center; padding:18px; }}
+footer {{ text-align:center; color:{T['muted']}; padding:20px; }}
 </style>
 """, unsafe_allow_html=True)
 
 # ------------------ SIDEBAR ------------------
 with st.sidebar:
-    st.markdown("### ⚙️ Controls")
-    if st.button("Toggle Theme 🌗"):
+    st.markdown("### ⚙️ Settings")
+    if st.button("Toggle Dark / Light 🌗"):
         st.session_state.theme = "light" if st.session_state.theme == "dark" else "dark"
         st.rerun()
 
     st.markdown("---")
-    section = st.radio(
-        "Navigate",
-        ["Home", "Research", "Projects", "CV", "Ask Me", "Play"],
-        index=0,
-    )
+    section = st.radio("Navigate", ["Home", "About", "Projects", "Skills", "CV", "Ask Me", "Game"])
 
-# ------------------ HEADER ------------------
-st.markdown(f"""
+# ------------------ HERO ------------------
+st.markdown("""
 <div class="hero">
-  <span class="badge">css2026 • Prize Edition</span>
-  <h1 style="margin-top:12px">Sarah Bopape — Research Portfolio</h1>
-  <p style="max-width:820px;color:var(--muted)">
-    Research-driven problem solver blending data, systems thinking, and creative technology.
-    This interactive portfolio showcases my work, impact, and a live assistant trained on my profile.
+  <h1>Mmatsie Sara Bopape</h1>
+  <h3>Cybersecurity Enthusiast & Final-Year Computer Science Student</h3>
+  <p style="max-width:850px">
+  Final year BSc Computer Science student at Walter Sisulu University, passionate about cybersecurity,
+  networking, and building innovative solutions to complex security challenges.
   </p>
 </div>
 """, unsafe_allow_html=True)
@@ -131,102 +98,116 @@ if section == "Home":
     with col1:
         st.markdown("""
         <div class="card">
-        <h2>About Me</h2>
-        <p style="color:var(--muted)">
-        I focus on applied research and digital innovation—turning complex ideas into practical tools.
-        My work spans data analysis, systems design, and human-centered technology.
+        <h2>Welcome</h2>
+        <p>
+        This interactive portfolio showcases my academic journey, technical skills, certifications,
+        and projects in cybersecurity, networking, and software development.
         </p>
         </div>
         """, unsafe_allow_html=True)
     with col2:
         st.markdown("""
         <div class="card kpi">
-          <div class="box"><h3>12+</h3><p>Projects</p></div>
-          <div class="box"><h3>5</h3><p>Domains</p></div>
-          <div class="box"><h3>∞</h3><p>Curiosity</p></div>
+          <div><h3>2026</h3><p>Final Year</p></div>
+          <div><h3>10+</h3><p>Certifications</p></div>
+          <div><h3>6+</h3><p>Languages</p></div>
         </div>
         """, unsafe_allow_html=True)
 
-# ------------------ RESEARCH ------------------
-elif section == "Research":
-    st.markdown("## Research Areas")
-    cols = st.columns(3)
-    topics = [
-        ("Data & Analytics", "Insight extraction, visualization, and decision support."),
-        ("AI & Automation", "Human-centered AI systems and workflows."),
-        ("Digital Systems", "Scalable, secure, and usable platforms."),
-    ]
-    for c, (t, d) in zip(cols, topics):
-        with c:
-            st.markdown(f"""
-            <div class="card">
-              <h3>{t}</h3>
-              <p style="color:var(--muted)">{d}</p>
-            </div>
-            """, unsafe_allow_html=True)
+# ------------------ ABOUT ------------------
+elif section == "About":
+    st.markdown("""
+    <div class="card">
+    <h2>Education</h2>
+    <b>BSc Computer Science</b> — Walter Sisulu University (2022–2026)<br>
+    Modules: Data Structures, Computer Architecture, Operating Systems, Networking,
+    Mathematics, Web Development, Software Engineering
+    <hr>
+    <b>Grade 12</b> — Eqinisweni Secondary School (2022)
+    </div>
+
+    <div class="card">
+    <h2>Experience</h2>
+    <b>Tutor</b> — Walter Sisulu University (Jan 2025 – Nov 2025)<br>
+    • Teaching Linear Programming & Applied Computing<br>
+    • Exam preparation and student support<br>
+    <br>
+    <b>IEC Digital Registration Assistant</b> (Aug 2025 – Sep 2025)<br>
+    • Assisted community members with voter registration<br>
+    • Improved digital literacy and ensured data accuracy
+    </div>
+    """, unsafe_allow_html=True)
 
 # ------------------ PROJECTS ------------------
 elif section == "Projects":
-    st.markdown("## Selected Projects")
-    for i in range(1, 4):
-        st.markdown(f"""
-        <div class="card">
-          <h3>Project {i}</h3>
-          <p style="color:var(--muted)">Problem → Method → Impact. Interactive dashboards, reports, or systems.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        time.sleep(0.05)
+    st.markdown("""
+    <div class="card">
+    <h3>Smart Lecturer Scheduling & Navigation System</h3>
+    React web app helping students check lecturer availability and campus directions.
+    </div>
+    <div class="card">
+    <h3>Hill Cipher Encryption / Decryption Tool</h3>
+    Cryptography tool using matrix mathematics and modular arithmetic.
+    </div>
+    """, unsafe_allow_html=True)
+
+# ------------------ SKILLS ------------------
+elif section == "Skills":
+    st.markdown("""
+    <div class="card">
+    <h3>Programming</h3>
+    C++, Java, JavaScript, Python, HTML, CSS
+    </div>
+    <div class="card">
+    <h3>Tools & Technologies</h3>
+    GitHub, Linux CLI, Cisco Packet Tracer, Wireshark
+    </div>
+    <div class="card">
+    <h3>Languages</h3>
+    Sepedi (Native), English, Zulu, Xhosa, Venda, Tsonga
+    </div>
+    """, unsafe_allow_html=True)
 
 # ------------------ CV ------------------
 elif section == "CV":
-    st.markdown("## Curriculum Vitae")
-    st.info("Upload your CV PDF here. It will be displayed and used by the assistant.")
-    cv = st.file_uploader("Upload CV (PDF)", type=["pdf"])
+    st.markdown("## Download My CV")
+    cv = st.file_uploader("Upload your CV PDF", type=["pdf"])
     if cv:
-        st.success("CV uploaded successfully!")
-        st.download_button("Download CV", cv, file_name="Sarah_Bopape_CV.pdf")
+        st.download_button("Download CV", cv, file_name="Mmatsie_Sara_Bopape_CV.pdf")
 
-# ------------------ ASK ME (CHAT) ------------------
+# ------------------ CHAT ------------------
 elif section == "Ask Me":
-    st.markdown("## Ask My Assistant")
+    st.markdown("## Ask Me Anything")
     if "chat" not in st.session_state:
         st.session_state.chat = []
 
-    chat_box = st.container()
-    with chat_box:
-        st.markdown('<div class="chat">', unsafe_allow_html=True)
-        for role, msg in st.session_state.chat:
-            st.markdown(f'<div class="message {role}">{msg}</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+    for role, msg in st.session_state.chat:
+        st.markdown(f'<div class="message {role}">{msg}</div>', unsafe_allow_html=True)
 
-    user_input = st.text_input("Ask about my research, skills, or projects")
-    if st.button("Send") and user_input:
-        st.session_state.chat.append(("user", user_input))
-        # Simple intelligent response (replace with API later if allowed)
-        responses = [
-            "Great question! My work focuses on applied research with real-world impact.",
-            "I combine data analysis and system design to solve complex problems.",
-            "That project involved research, prototyping, and measurable outcomes.",
-        ]
-        st.session_state.chat.append(("ai", random.choice(responses)))
+    q = st.text_input("Ask about my skills, projects, or cybersecurity interests")
+    if st.button("Send") and q:
+        st.session_state.chat.append(("user", q))
+        st.session_state.chat.append(("ai", "I am passionate about cybersecurity, networking, and secure systems design."))
         st.rerun()
 
 # ------------------ GAME ------------------
-elif section == "Play":
-    st.markdown("## Mini Game: Research Reflex")
-    st.write("Click the button as fast as you can when it appears!")
-    if st.button("Start"):
-        wait = random.uniform(1.5, 4.0)
-        time.sleep(wait)
-        start = time.time()
-        if st.button("CLICK NOW!"):
-            score = time.time() - start
-            st.success(f"Your reaction time: {score:.3f}s")
+elif section == "Game":
+    st.markdown("## Cyber Cards vs AI")
+    st.write("Draw a card. Highest number wins against the AI.")
+    if st.button("Draw Card"):
+        user = random.randint(1, 13)
+        ai = random.randint(1, 13)
+        st.write(f"You drew **{user}** | AI drew **{ai}**")
+        if user > ai:
+            st.success("You win! 🏆")
+        elif user < ai:
+            st.error("AI wins 🤖")
+        else:
+            st.info("Draw!")
 
 # ------------------ FOOTER ------------------
-st.markdown("""
+st.markdown(f"""
 <footer>
-© {year} • css2026 Research Portfolio • Built with Streamlit
+© {datetime.now().year} Mmatsie Sara Bopape • Cybersecurity Portfolio
 </footer>
-""".format(year=datetime.now().year), unsafe_allow_html=True)
-
+""", unsafe_allow_html=True)
