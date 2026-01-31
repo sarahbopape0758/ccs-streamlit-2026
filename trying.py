@@ -68,7 +68,7 @@ html, body, .stApp {{ background:{T['bg']}; color:{T['text']}; }}
 
 footer {{ text-align:center; color:{T['muted']}; padding:20px; }}
 .stFileUploader label, .stFileUploader span, .stFileUploader small { color: inherit !important; }
-.stFileUploader div { background-color: " + "#0f172a" + " !important; border-radius:12px; }
+.stFileUploader div { background-color: #0f172a !important; border-radius:12px; }
 </style>
 """, unsafe_allow_html=True)
 
