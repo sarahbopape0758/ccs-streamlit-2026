@@ -172,9 +172,24 @@ elif section == "Skills":
 # ------------------ CV ------------------
 elif section == "CV":
     st.markdown("## Download My CV")
-    cv = st.file_uploader("Upload your CV PDF", type=["pdf"])
-    if cv:
-        st.download_button("Download CV", cv, file_name="Mmatsie_Sara_Bopape_CV.pdf")
+    st.markdown(
+        "<div class='card'>My CV is available below. Click the button to download it.</div>",
+        unsafe_allow_html=True,
+    )
+
+    # Load CV file from repository
+    try:
+        with open("Mmatsie_Sara_Bopape_CV.pdf", "rb") as f:
+            cv_bytes = f.read()
+
+        st.download_button(
+            label="📄 Download CV (PDF)",
+            data=cv_bytes,
+            file_name="Mmatsie_Sara_Bopape_CV.pdf",
+            mime="application/pdf",
+        )
+    except FileNotFoundError:
+        st.error("CV file not found. Please make sure 'Mmatsie_Sara_Bopape_CV.pdf' is included in the project repository.")
 
 # ------------------ CHAT ------------------
 elif section == "Ask Me":
@@ -220,7 +235,7 @@ elif section == "Ask Me":
 # ------------------ GAME ------------------
 
 elif section == "Game":
-    st.markdown("## 🎉 Cyber Card Match vs AI 🎉")
+    st.markdown("##  Cyber Card Match vs AI ")
     st.write("A secret card is drawn. Choose a number (1–13). You **can win** — and when you do, enjoy the celebration! 🎈")
 
     # Initialize game state
