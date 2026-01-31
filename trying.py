@@ -67,6 +67,8 @@ html, body, .stApp {{ background:{T['bg']}; color:{T['text']}; }}
 .message.ai {{ background:rgba(34,211,238,.15); padding:12px; border-radius:14px; margin-bottom:10px; }}
 
 footer {{ text-align:center; color:{T['muted']}; padding:20px; }}
+.stFileUploader label, .stFileUploader span, .stFileUploader small { color: var(--text) !important; }
+.stFileUploader div { background-color: var(--card) !important; border-radius:12px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -117,8 +119,7 @@ elif section != "Home":
     pass
 
 
-if section == "Home":
-    col1, col2 = st.columns([2, 1])
+
     with col1:
         st.markdown("""
         <div class="card">
