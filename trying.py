@@ -1,4 +1,4 @@
-# dynamic_portfolio.py
+# app_streamlit_native.py
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,65 +10,22 @@ theme = st.sidebar.selectbox("Choose Theme", ["Dark", "Light"])
 
 if theme == "Dark":
     bg_color = "#0f172a"
-    card_color = "#020617"
     text_color = "#e5e7eb"
     accent = "#38bdf8"
     chart_bg = "#0f172a"
 else:
     bg_color = "#f8fafc"
-    card_color = "#ffffff"
     text_color = "#020617"
     accent = "#2563eb"
     chart_bg = "#ffffff"
 
-# ---------------- PAGE CONFIG ----------------
-st.set_page_config(
-    page_title="MMATSIE SARA BOPAPE Portfolio",
-    page_icon="💻",
-    layout="wide",
-)
-
-# ---------------- CSS ----------------
 st.markdown(f"""
 <style>
-body {{
-    background-color: {bg_color};
-    color: {text_color};
-    font-family: 'Segoe UI', sans-serif;
-}}
-h1, h2, h3 {{
-    color: {accent};
-}}
-.card {{
-    background-color: {card_color};
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.2);
-    margin-bottom: 25px;
-    transition: all 0.3s ease;
-}}
-.card:hover {{
-    box-shadow: 0 0 40px {accent};
-}}
-.badge {{
-    display: inline-block;
-    background-color: {bg_color};
-    padding: 8px 14px;
-    border-radius: 25px;
-    margin: 6px;
-    color: {accent};
-    font-size: 14px;
-}}
-.stButton>button {{
-    background-color: {accent};
-    color: {text_color};
-    border-radius: 10px;
-    padding: 8px 20px;
-}}
+body {{background-color: {bg_color}; color: {text_color};}}
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- DATA ----------------
+# ---------------- PROFILE ----------------
 profile = {
     "name": "MMATSIE SARA BOPAPE",
     "title": "Computer Science Researcher | Cybersecurity & Data Science",
@@ -81,7 +38,7 @@ profile = {
         "2025 – Built data-driven and Streamlit applications",
         "2026 – Aspiring cybersecurity & data science researcher"
     ],
-    "projects_folder": "projects",  # folder with project images + .txt descriptions
+    "projects_folder": "projects",
     "future_research": [
         "Improve accuracy of career guidance using AI",
         "Protect learner data with secure systems",
@@ -89,14 +46,15 @@ profile = {
     ]
 }
 
-# ---------------- FUNCTIONS ----------------
-def load_image(path, width=None):
+# ---------------- LOAD IMAGE ----------------
+def load_image(path):
     if os.path.exists(path):
         return Image.open(path)
     else:
-        st.error(f"Image not found: {path}")
+        st.warning(f"Image not found: {path}")
         return None
 
+# ---------------- PLOT SKILLS ----------------
 def plot_skills(skills):
     fig, ax = plt.subplots()
     fig.patch.set_facecolor(bg_color)
@@ -110,13 +68,14 @@ def plot_skills(skills):
         spine.set_edgecolor(text_color)
     return fig
 
+# ---------------- LOAD PROJECTS ----------------
 def load_projects(folder):
     projects = []
     if os.path.exists(folder):
         for f in os.listdir(folder):
             if f.endswith(".txt"):
                 title = f.replace(".txt","").replace("_"," ").title()
-                desc = open(os.path.join(folder,f), "r").read()
+                desc = open(os.path.join(folder,f)).read()
                 image_file = os.path.join(folder, f.replace(".txt",".jpg"))
                 projects.append({"title":title,"desc":desc,"image":image_file})
     return projects
@@ -127,42 +86,36 @@ page = st.sidebar.radio("Explore", ["Home","Journey","Projects","Skills","AI Q&A
 
 # ---------------- PAGES ----------------
 if page=="Home":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-    img = load_image(profile["profile_image"],200)
+    img = load_image(profile["profile_image"])
     if img: st.image(img, width=200)
     st.title(profile["name"])
     st.subheader(profile["title"])
     st.write(profile["bio"])
-    st.markdown("</div>", unsafe_allow_html=True)
 
 elif page=="Journey":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Research Journey")
     for item in profile["journey"]:
-        st.write(f"- {item}")
-    st.markdown("</div>", unsafe_allow_html=True)
+        with st.container():
+            st.markdown(f"- {item}")
 
 elif page=="Projects":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Projects")
     projects = load_projects(profile["projects_folder"])
     for p in projects:
-        st.subheader(p["title"])
-        if os.path.exists(p["image"]):
-            st.image(load_image(p["image"]), width=300)
-        st.write(p["desc"])
-    st.markdown("</div>", unsafe_allow_html=True)
+        with st.container():
+            st.subheader(p["title"])
+            if os.path.exists(p["image"]):
+                st.image(load_image(p["image"]), width=300)
+            st.write(p["desc"])
+            st.divider()
 
 elif page=="Skills":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Skills")
     st.pyplot(plot_skills(profile["skills"]))
-    for s in profile["skills"]:
-        st.markdown(f"<span class='badge'>{s}</span>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+    for skill in profile["skills"]:
+        st.markdown(f"`{skill}`", unsafe_allow_html=True)
 
 elif page=="AI Q&A":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Ask Me Anything")
     q = st.text_input("Ask a question about my work")
     if q:
@@ -173,20 +126,16 @@ elif page=="AI Q&A":
             st.success("Cybersecurity ensures the systems I build are secure and trustworthy.")
         else:
             st.info("Hmm… this is a question outside my current answers. Sarah will personally reply to this question soon! ✨")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 elif page=="Future Research":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Future Research")
     for f in profile["future_research"]:
-        st.write(f"- {f}")
-    st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown(f"- {f}")
 
 elif page=="Contact":
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.header("Contact")
     st.write("Walter Sisulu University")
     st.write("Computer Science Department")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 st.caption("© 2026 | MMATSIE SARA BOPAPE | Interactive Portfolio")
+
