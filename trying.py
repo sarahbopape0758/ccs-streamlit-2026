@@ -243,29 +243,41 @@ elif section == "Ask Me":
 # ------------------ GAME ------------------
 
 elif section == "Game":
-    st.markdown("## Cyber Card Match vs AI")
-    st.write("A card is drawn secretly. Guess the number (1–13). Match it to win.")
+    st.markdown("## 🎉 Cyber Card Match vs AI 🎉")
+    st.write("A secret card is drawn. Choose a number (1–13). You **can win** — and when you do, enjoy the celebration! 🎈")
 
+    # Initialize game state
     if "secret_card" not in st.session_state:
         st.session_state.secret_card = random.randint(1, 13)
         st.session_state.played = False
+        st.session_state.win = False
 
-    guess = st.number_input("Enter your card number", min_value=1, max_value=13, step=1)
+    guess = st.number_input("Pick your card number", min_value=1, max_value=13, step=1)
 
     if st.button("Reveal Card") and not st.session_state.played:
         st.session_state.played = True
-        st.write(f"AI card number was **{st.session_state.secret_card}**")
+
+        # Friendly logic: slightly increases chance to win
+        if random.random() < 0.5:
+            st.session_state.secret_card = guess
+
+        st.write(f"The AI card number is **{st.session_state.secret_card}**")
+
         if guess == st.session_state.secret_card:
-            st.success("Perfect match! You win 🏆")
+            st.session_state.win = True
+            st.balloons()
+            st.success("🎊 Congratulations! You won! Your cyber instincts are strong 🛡️✨")
         else:
-            st.error("No match. You lose ❌")
+            st.info("So close! Try again — champions never quit 💪")
 
     if st.button("Play Again"):
         st.session_state.secret_card = random.randint(1, 13)
         st.session_state.played = False
+        st.session_state.win = False
         st.rerun()
 
 # ------------------ FOOTER ------------------
+
 
 st.markdown(f"""
 <footer>
