@@ -216,7 +216,7 @@ elif section == "Ask Me":
     if st.button("Send") and q:
         st.session_state.chat.append(("user", q))
         answer = next((knowledge[k] for k in knowledge if k in q.lower()), 
-                      "Please contact Sara: bopapesarah2324@gmail.com  /n for more information")
+                      "Please contact Sara: bopapesarah2324@gmail.com for more information")
         st.session_state.chat.append(("ai", answer))
         st.rerun()
         
