@@ -173,7 +173,7 @@ elif section == "Skills":
         "Python": "Used for automation, scripts, and cybersecurity tools.", 
         "Java": "Experience in OOP and building desktop and web apps.",
         "C++": "Strong understanding of algorithms and system programming.",
-        "Networking": "Knowledge of TCP/IP, routing, switching, Packet Tracer.",
+        "Networking": "Knowledge of TCP and IP, routing, switching, Packet Tracer.",
         "Linux": "Proficient in CLI, Bash scripting, and server management.",
         "Basic Cybersecurity": "Skills in cryptography, hashes, vulnerability testing."
     }
