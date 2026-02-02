@@ -17,7 +17,7 @@ st.set_page_config(
 
 # ------------------ THEME ------------------
 if "theme" not in st.session_state:
-    st.session_state.theme = "dark"
+    st.session_state.theme = "light"
 
 THEMES = {
     "dark": {
