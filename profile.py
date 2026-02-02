@@ -284,14 +284,16 @@ elif section=="Timeline":
             st.success(f" Milestone {year} celebrated!")
 # ------------------ BADGES / CERTIFICATES ------------------
 elif section == "Badges":
-    st.markdown("##  Certificates & Badges")
-    st.markdown("Use **Next** and **Previous** to view your achievements.")
+    from PIL import Image
+    import os
 
-    # Initialize index safely
+    st.markdown("## Certificates & Badges")
+    st.markdown("Use Next and Previous to view your achievements.")
+
+    # Initialize index
     if "badge_index" not in st.session_state:
         st.session_state.badge_index = 0
 
-    # Certificates list (MAKE SURE these files exist in your app folder)
     certificates = [
         {"img": "certificate1.jpeg", "name": "Certificate 1"},
         {"img": "certificate2.jpeg", "name": "Certificate 2"},
@@ -303,38 +305,35 @@ elif section == "Badges":
 
     total = len(certificates)
 
-    # Safety check (prevents crashes)
+    # Prevent index errors
     st.session_state.badge_index = max(
         0, min(st.session_state.badge_index, total - 1)
     )
 
     cert = certificates[st.session_state.badge_index]
+    img_path = cert["img"]  # directly from repo root
 
     # Display certificate
-    try:
-        image = Image.open(cert["img"])
+    if os.path.exists(img_path):
+        image = Image.open(img_path)
         st.image(
             image,
-            caption=f"{cert['name']} ({st.session_state.badge_index + 1} / {total})",
+            caption=f"{cert['name']} ({st.session_state.badge_index + 1}/{total})",
             use_column_width=True
         )
-    except FileNotFoundError:
-        st.error(
-            f" `{cert['img']}` not found. "
-            "Make sure the image is inside your project folder."
-        )
+    else:
+        st.error(f"File not found in repo root: {img_path}")
 
     # Navigation buttons
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button("⬅ Previous") and st.session_state.badge_index > 0:
+        if st.button("Previous") and st.session_state.badge_index > 0:
             st.session_state.badge_index -= 1
 
     with col2:
-        if st.button("Next ➡") and st.session_state.badge_index < total - 1:
+        if st.button("Next") and st.session_state.badge_index < total - 1:
             st.session_state.badge_index += 1
-
 
 # ------------------ FOOTER ------------------
 st.markdown(f"""
