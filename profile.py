@@ -269,8 +269,8 @@ elif section=="Timeline":
     timeline_events = [
         ("2022", "Matriculated at Eqinisweni Secondary School"),
         ("2023", "Started BSc Computer Science"),
-        ("2024", "First Internship / Project"),
-        ("2025", "Tutor & IEC Assistant"),
+        ("2024", "Second Year"),
+        ("2025", "Third-Year , Tutor & IEC Assistant"),
         ("2026", "Final Year & Portfolio Showcase")
     ]
     for year, event in timeline_events:
