@@ -10,7 +10,7 @@ import io
 # ------------------ PAGE CONFIG ------------------
 st.set_page_config(
     page_title="Mmatsie Sara Bopape | Cybersecurity Portfolio",
-    page_icon="🛡️",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -82,7 +82,7 @@ footer {{ text-align:center; color:{T['muted']}; padding:20px; }}
 # ------------------ SIDEBAR ------------------
 with st.sidebar:
     st.markdown("### ⚙️ Settings")
-    if st.button("Toggle Dark / Light 🌗"):
+    if st.button("Toggle Dark / Light "):
         st.session_state.theme = "light" if st.session_state.theme == "dark" else "dark"
         st.rerun()
     st.markdown("---")
@@ -191,7 +191,7 @@ elif section == "CV":
         with open("Mmatsie_Sara_Bopape_CV.pdf", "rb") as f:
             cv_bytes = f.read()
         st.download_button(
-            label="📄 Download CV (PDF)",
+            label=" Download CV (PDF)",
             data=cv_bytes,
             file_name="Mmatsie_Sara_Bopape_CV.pdf",
             mime="application/pdf",
@@ -222,7 +222,7 @@ elif section == "Ask Me":
         
 # ------------------ GAME ------------------
 elif section == "Game":
-    st.markdown("## 🎉 Cyber Card Match / Mini CTF 🎉")
+    st.markdown("##  Cyber Card Match / Mini CTF ")
     st.write("A secret card is drawn. Pick a number (1–13). You win if your guess matches the AI card!")
 
     # Initialize game state
@@ -244,13 +244,13 @@ elif section == "Game":
         if guess == st.session_state.secret_card:
             st.session_state.win = True
             st.balloons()
-            st.success("🎊 Congratulations! You won! Your cyber instincts are strong 🛡️✨")
+            st.success(" Congratulations! You won! Your cyber instincts are strong ")
         else:
             # Slightly fun feedback if close
             if abs(guess - st.session_state.secret_card) == 1:
-                st.info("So close! You were just 1 away! 💪")
+                st.info("So close! You were just 1 away! ")
             else:
-                st.info("Not quite — try again! 💪")
+                st.info("Not quite — try again! ")
 
     if st.button("Play Again"):
         st.session_state.secret_card = random.randint(1, 13)
@@ -260,7 +260,7 @@ elif section == "Game":
 
 # ------------------ TOOLS ------------------
 elif section=="Tools":
-    st.markdown("## 🔧 Cybersecurity Tools & Demos")
+    st.markdown("##  Cybersecurity Tools & Demos")
     st.markdown("### SHA256 Hash Generator\nSHA256 creates a secure hash, used for password protection, digital signatures, and data integrity.")
     msg = st.text_input("Enter text to hash (SHA256)")
     if st.button("Hash Text") and msg:
@@ -269,7 +269,7 @@ elif section=="Tools":
 
 # ------------------ TIMELINE ------------------
 elif section=="Timeline":
-    st.markdown("## 📅 My Journey")
+    st.markdown("##  My Journey")
     timeline_events = [
         ("2022", "Matriculated at Eqinisweni Secondary School"),
         ("2023", "Started BSc Computer Science"),
@@ -285,7 +285,7 @@ elif section=="Timeline":
 
 # ------------------ BADGES / CERTIFICATES ------------------
 elif section=="Badges":
-    st.markdown("## 🏆 Certificates & Badges")
+    st.markdown("##  Certificates & Badges")
     st.markdown("Click Next / Previous to view your achievements.")
 
     if "badge_index" not in st.session_state:
