@@ -168,7 +168,7 @@ elif section == "Projects":
 
 #Skills
 elif section == "Skills":
-    st.markdown("<h2 style='text-align:center; margin-bottom:30px;'> My Key Skills</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; margin-bottom:30px;'>💡 My Key Skills</h2>", unsafe_allow_html=True)
 
     skills = {
         "Python": "Used for automation, scripts, and cybersecurity tools.", 
@@ -179,6 +179,7 @@ elif section == "Skills":
         "Cybersecurity": "Skills in cryptography, hashes, vulnerability testing."
     }
 
+    # CSS for glassmorphism + neon glow effect
     st.markdown("""
     <style>
     .skill-grid {
@@ -188,26 +189,29 @@ elif section == "Skills":
         margin-bottom: 40px;
     }
     .skill-card-unique {
-        background: linear-gradient(135deg, #4f46e5, #06b6d4);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
         color: #fff;
         padding: 20px;
-        border-radius: 18px;
+        border-radius: 20px;
         text-align: center;
         font-weight: bold;
         font-size: 18px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         transition: transform 0.3s, box-shadow 0.3s;
         cursor: default;
     }
     .skill-card-unique:hover {
         transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        box-shadow: 0 12px 35px rgba(0, 255, 255, 0.5);
+        border-color: #22d3ee;
     }
     .skill-card-desc {
         font-size: 12px;
         font-weight: normal;
-        margin-top: 8px;
-        color: rgba(255,255,255,0.85);
+        margin-top: 10px;
+        color: rgba(255,255,255,0.8);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -224,6 +228,7 @@ elif section == "Skills":
     skill_html += "</div>"
 
     st.markdown(skill_html, unsafe_allow_html=True)
+
     
 #CV
 elif section == "CV":
