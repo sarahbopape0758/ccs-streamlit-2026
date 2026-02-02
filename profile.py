@@ -166,7 +166,7 @@ elif section == "Projects":
         st.success(f"Decrypted message: {decrypted}")
         st.info("Decryption reverses the shift to reveal the original message.")
 
-#Skills
+#skills
 elif section == "Skills":
     st.markdown("<h2 style='text-align:center; margin-bottom:30px;'>💡 My Key Skills</h2>", unsafe_allow_html=True)
 
@@ -229,7 +229,6 @@ elif section == "Skills":
 
     st.markdown(skill_html, unsafe_allow_html=True)
 
-    
 #CV
 elif section == "CV":
     st.markdown("## Download My CV")
