@@ -1,5 +1,4 @@
 # css2026-sarah-bopape-portfolio
-# Premium Streamlit portfolio for Mmatsie Sara Bopape - Upgraded
 
 import streamlit as st
 import random
@@ -181,8 +180,6 @@ elif section == "Skills":
 
     for skill, desc in skills.items():
         st.markdown(f"**{skill}**: {desc}")
-    }
-
 #CV
 elif section == "CV":
     st.markdown("## Download My CV")
