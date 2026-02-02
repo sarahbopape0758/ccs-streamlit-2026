@@ -320,13 +320,11 @@ elif section in ["Badges", "Certificates"]:
     with col1:
         if st.button("Previous") and st.session_state.badge_index > 0:
             st.session_state.badge_index -= 1
-            st.session_state.return_trigger = True
-            st.experimental_rerun()
+            
     with col2:
         if st.button("Next") and st.session_state.badge_index < total - 1:
             st.session_state.badge_index += 1
-            st.session_state.return_trigger = True
-            st.experimental_rerun()
+           
 #FOOTER
 st.markdown(f"""
 <footer>
