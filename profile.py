@@ -218,7 +218,7 @@ elif section == "Ask Me":
         st.session_state.chat.append(("ai", answer))
         st.rerun()
         
-#GAME
+#Game
 elif section == "Game":
     st.markdown("## Cyber Card Match  ")
     st.write("A secret card is drawn. Pick a number (1–13). You win if your guess matches the AI card!")
@@ -254,7 +254,7 @@ elif section == "Game":
         st.session_state.win = False
         st.rerun()
 
-#TOOLS
+#Tools
 elif section=="Tools":
     st.markdown("##  Cybersecurity Tools & Demos")
     st.markdown("### SHA256 Hash Generator\nSHA256 creates a secure hash, used for password protection, digital signatures, and data integrity.")
@@ -263,7 +263,7 @@ elif section=="Tools":
         h = hashlib.sha256(msg.encode()).hexdigest()
         st.success(f"SHA256 Hash: {h}")
 
-#TIMELINE
+#Tmeline
 elif section=="Timeline":
     st.markdown("##  My Journey")
     timeline_events = [
@@ -279,7 +279,7 @@ elif section=="Timeline":
             st.balloons()
             st.success(f" Milestone {year} celebrated!")
             
-# ------------------ CERTIFICATES / BADGES ------------------
+#Certificates
 elif section in ["Badges", "Certificates"]:
     from PIL import Image
     import streamlit as st
@@ -287,7 +287,6 @@ elif section in ["Badges", "Certificates"]:
     st.markdown("## Certificates & Badges")
     st.markdown("Use Next and Previous to view your achievements.")
 
-    # Initialize index
     if "badge_index" not in st.session_state:
         st.session_state.badge_index = 0
 
@@ -302,13 +301,10 @@ elif section in ["Badges", "Certificates"]:
 
     total = len(certificates)
 
-    # Ensure index is valid
     st.session_state.badge_index = max(0, min(st.session_state.badge_index, total - 1))
 
-    # Load current certificate
     current_cert = certificates[st.session_state.badge_index]
 
-    # Display certificate safely
     try:
         with open(current_cert["img"], "rb") as f:
             image = Image.open(f)
@@ -320,15 +316,16 @@ elif section in ["Badges", "Certificates"]:
     except FileNotFoundError:
         st.error(f"File not found: {current_cert['img']}")
 
-    # Navigation buttons
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Previous") and st.session_state.badge_index > 0:
             st.session_state.badge_index -= 1
+            st.session_state.return_trigger = True
             st.experimental_rerun()
     with col2:
         if st.button("Next") and st.session_state.badge_index < total - 1:
             st.session_state.badge_index += 1
+            st.session_state.return_trigger = True
             st.experimental_rerun()
 #FOOTER
 st.markdown(f"""
