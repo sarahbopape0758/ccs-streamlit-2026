@@ -172,7 +172,7 @@ elif section == "Skills":
 
     skills = {
         "Python": "Used for automation, scripts, and cybersecurity tools.", 
-        "Java": "Experience in OOP and building desktop/web apps.",
+        "Java": "Experience in OOP and web apps.",
         "C++": "Strong understanding of algorithms and system programming.",
         "Networking": "Knowledge of TCP/IP, routing, switching, Packet Tracer.",
         "Linux": "Proficient in CLI, Bash scripting, and server management.",
