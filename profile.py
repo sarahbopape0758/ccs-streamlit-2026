@@ -282,6 +282,7 @@ elif section=="Timeline":
         if st.button(f"Celebrate {year} milestone"):
             st.balloons()
             st.success(f" Milestone {year} celebrated!")
+            
 # ------------------ BADGES / CERTIFICATES ------------------
 elif section == "Badges":
     from PIL import Image
@@ -311,7 +312,10 @@ elif section == "Badges":
     )
 
     cert = certificates[st.session_state.badge_index]
-    img_path = cert["img"]  # directly from repo root
+
+    # Absolute path based on app.py location
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    img_path = os.path.join(BASE_DIR, cert["img"])
 
     # Display certificate
     if os.path.exists(img_path):
@@ -322,7 +326,7 @@ elif section == "Badges":
             use_column_width=True
         )
     else:
-        st.error(f"File not found in repo root: {img_path}")
+        st.error(f"File not found: {cert['img']}")
 
     # Navigation buttons
     col1, col2 = st.columns(2)
