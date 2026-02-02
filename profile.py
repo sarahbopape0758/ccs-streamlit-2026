@@ -23,9 +23,9 @@ THEMES = {
     "dark": {
         "bg": "#0b0f14",
         "text": "#e6e8eb",
-        "muted": "#0b0f14",
-        "accent": "#0b0f14",
-        "accent2": "#0b0f14",
+        "muted": "#09aa4b2",
+        "accent": "#7c9cff",
+        "accent2": "#22d3ee",
         "card": "#0b0f14",
         "shadow": "0 20px 40px rgba(0,0,0,.45)",
     },
