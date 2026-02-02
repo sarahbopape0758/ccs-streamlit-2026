@@ -179,9 +179,6 @@ elif section == "Skills":
         "Basic cybersecurity"
     }
 
-    for skill, desc in skills.items():
-        st.markdown(f"**{skill}**: {desc}")
-
 #CV
 elif section == "CV":
     st.markdown("## Download My CV")
