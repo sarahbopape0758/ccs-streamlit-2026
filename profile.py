@@ -168,18 +168,63 @@ elif section == "Projects":
 
 #Skills
 elif section == "Skills":
-    st.markdown("<h2>My Skills</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; margin-bottom:30px;'> My Key Skills</h2>", unsafe_allow_html=True)
+
     skills = {
-        "Python": "Used for automation, scripts, and cybersecurity tools.",
+        "Python": "Used for automation, scripts, and cybersecurity tools.", 
         "Java": "Experience in OOP and building desktop/web apps.",
         "C++": "Strong understanding of algorithms and system programming.",
         "Networking": "Knowledge of TCP/IP, routing, switching, Packet Tracer.",
         "Linux": "Proficient in CLI, Bash scripting, and server management.",
         "Cybersecurity": "Skills in cryptography, hashes, vulnerability testing."
     }
-    for skill, desc in skills.items():
-        st.markdown(f'<div class="skill-card" title="{desc}">{skill}</div>', unsafe_allow_html=True)
 
+    st.markdown("""
+    <style>
+    .skill-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+    .skill-card-unique {
+        background: linear-gradient(135deg, #4f46e5, #06b6d4);
+        color: #fff;
+        padding: 20px;
+        border-radius: 18px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: default;
+    }
+    .skill-card-unique:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .skill-card-desc {
+        font-size: 12px;
+        font-weight: normal;
+        margin-top: 8px;
+        color: rgba(255,255,255,0.85);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Render skill cards
+    skill_html = "<div class='skill-grid'>"
+    for skill, desc in skills.items():
+        skill_html += f"""
+        <div class='skill-card-unique'>
+            {skill}
+            <div class='skill-card-desc'>{desc}</div>
+        </div>
+        """
+    skill_html += "</div>"
+
+    st.markdown(skill_html, unsafe_allow_html=True)
+    
 #CV
 elif section == "CV":
     st.markdown("## Download My CV")
