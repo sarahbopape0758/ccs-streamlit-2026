@@ -313,15 +313,17 @@ elif section == "Certificates":
     img_path = os.path.join(BASE_DIR, cert["img"])
 
     # Display certificate
-    if os.path.exists(img_path):
-        image = Image.open(img_path)
+try:
+    with open(cert["img"], "rb") as f:
+        image = Image.open(f)
         st.image(
             image,
             caption=f"{cert['name']} ({st.session_state.badge_index + 1}/{total})",
             use_column_width=True
         )
-    else:
-        st.error(f"File not found: {cert['img']}")
+except FileNotFoundError:
+    st.error(f"File not found: {cert['img']}")
+
 
     # Navigation buttons
     col1, col2 = st.columns(2)
