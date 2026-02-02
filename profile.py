@@ -171,12 +171,16 @@ elif section == "Skills":
     st.markdown("## My Key Skills")
 
     skills = {
-        "Python", 
-        "Java",
-        "C++",
-        "Networking",
-        "Linux",
-        "Basic cybersecurity"
+       "Python": "Used for automation, scripts, and cybersecurity tools.", 
+        "Java": "Experience in OOP and building desktop/web apps.",
+        "C++": "Strong understanding of algorithms and system programming.",
+        "Networking": "Knowledge of TCP/IP, routing, switching, Packet Tracer.",
+        "Linux": "Proficient in CLI, Bash scripting, and server management.",
+        "Basic cybersecurity": "Skills in cryptography, hashes, vulnerability testing."
+    }
+
+    for skill, desc in skills.items():
+        st.markdown(f"**{skill}**: {desc}")
     }
 
 #CV
