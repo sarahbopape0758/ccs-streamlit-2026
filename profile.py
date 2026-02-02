@@ -281,36 +281,60 @@ elif section=="Timeline":
         st.markdown(f"**{year}** — {event}")
         if st.button(f"Celebrate {year} milestone"):
             st.balloons()
-            st.success(f"🎉 Milestone {year} celebrated!")
-
+            st.success(f" Milestone {year} celebrated!")
 # ------------------ BADGES / CERTIFICATES ------------------
-elif section=="Badges":
+elif section == "Badges":
     st.markdown("##  Certificates & Badges")
-    st.markdown("Click Next / Previous to view your achievements.")
+    st.markdown("Use **Next** and **Previous** to view your achievements.")
 
+    # Initialize index safely
     if "badge_index" not in st.session_state:
         st.session_state.badge_index = 0
 
-    # Example list of badge images + info
-    badges = [
-        {"img":"cert1.png","name":"Cisco Networking","provider":"Cisco"},
-        {"img":"cert2.png","name":"Python for Cybersecurity","provider":"Udemy"},
-        {"img":"cert3.png","name":"Linux Fundamentals","provider":"Coursera"}
+    # Certificates list (MAKE SURE these files exist in your app folder)
+    certificates = [
+        {"img": "certificate1.png", "name": "Certificate 1"},
+        {"img": "certificate2.png", "name": "Certificate 2"},
+        {"img": "certificate3.png", "name": "Certificate 3"},
+        {"img": "certificate4.png", "name": "Certificate 4"},
+        {"img": "certificate5.png", "name": "Certificate 5"},
+        {"img": "certificate6.png", "name": "Certificate 6"},
     ]
 
-    # Load current badge
-    badge = badges[st.session_state.badge_index]
-    try:
-        image = Image.open(badge["img"])
-        st.image(image, caption=f'{badge["name"]} — {badge["provider"]}', use_column_width=True)
-    except FileNotFoundError:
-        st.warning(f"Image {badge['img']} not found. Add it to your project folder.")
+    total = len(certificates)
 
+    # Safety check (prevents crashes)
+    st.session_state.badge_index = max(
+        0, min(st.session_state.badge_index, total - 1)
+    )
+
+    cert = certificates[st.session_state.badge_index]
+
+    # Display certificate
+    try:
+        image = Image.open(cert["img"])
+        st.image(
+            image,
+            caption=f"{cert['name']} ({st.session_state.badge_index + 1} / {total})",
+            use_column_width=True
+        )
+    except FileNotFoundError:
+        st.error(
+            f" `{cert['img']}` not found. "
+            "Make sure the image is inside your project folder."
+        )
+
+    # Navigation buttons
     col1, col2 = st.columns(2)
-    if col1.button("Previous"):
-        st.session_state.badge_index = max(0, st.session_state.badge_index-1)
-    if col2.button("Next"):
-        st.session_state.badge_index = min(len(badges)-1, st.session_state.badge_index+1)
+
+    with col1:
+        if st.button("⬅ Previous") and st.session_state.badge_index > 0:
+            st.session_state.badge_index -= 1
+
+    with col2:
+        if st.button("Next ➡") and st.session_state.badge_index < total - 1:
+            st.session_state.badge_index += 1
+
 
 # ------------------ FOOTER ------------------
 st.markdown(f"""
