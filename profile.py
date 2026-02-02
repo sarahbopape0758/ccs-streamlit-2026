@@ -279,12 +279,12 @@ elif section=="Timeline":
             st.balloons()
             st.success(f" Milestone {year} celebrated!")
             
-#CERTIFICATES
-elif section == "Certificates":
+# ------------------ CERTIFICATES / BADGES ------------------
+elif section in ["Badges", "Certificates"]:
     from PIL import Image
-    import os
+    import streamlit as st
 
-    st.markdown("## Certificates ")
+    st.markdown("## Certificates & Badges")
     st.markdown("Use Next and Previous to view your achievements.")
 
     # Initialize index
@@ -302,40 +302,34 @@ elif section == "Certificates":
 
     total = len(certificates)
 
-    # Prevent index errors
-    st.session_state.badge_index = max(
-        0, min(st.session_state.badge_index, total - 1)
-    )
+    # Ensure index is valid
+    st.session_state.badge_index = max(0, min(st.session_state.badge_index, total - 1))
 
-    cert = certificates[st.session_state.badge_index]
+    # Load current certificate
+    current_cert = certificates[st.session_state.badge_index]
 
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    img_path = os.path.join(BASE_DIR, cert["img"])
-
-    # Display certificate
-try:
-    with open(cert["img"], "rb") as f:
-        image = Image.open(f)
-        st.image(
-            image,
-            caption=f"{cert['name']} ({st.session_state.badge_index + 1}/{total})",
-            use_column_width=True
-        )
-except FileNotFoundError:
-    st.error(f"File not found: {cert['img']}")
-
+    # Display certificate safely
+    try:
+        with open(current_cert["img"], "rb") as f:
+            image = Image.open(f)
+            st.image(
+                image,
+                caption=f"{current_cert['name']} ({st.session_state.badge_index + 1}/{total})",
+                use_column_width=True
+            )
+    except FileNotFoundError:
+        st.error(f"File not found: {current_cert['img']}")
 
     # Navigation buttons
     col1, col2 = st.columns(2)
-
     with col1:
         if st.button("Previous") and st.session_state.badge_index > 0:
             st.session_state.badge_index -= 1
-
+            st.experimental_rerun()
     with col2:
         if st.button("Next") and st.session_state.badge_index < total - 1:
             st.session_state.badge_index += 1
-
+            st.experimental_rerun()
 #FOOTER
 st.markdown(f"""
 <footer>
