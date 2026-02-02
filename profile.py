@@ -166,9 +166,9 @@ elif section == "Projects":
         st.success(f"Decrypted message: {decrypted}")
         st.info("Decryption reverses the shift to reveal the original message.")
 
-#skills
+#Skills
 elif section == "Skills":
-    st.markdown("<h2 style='text-align:center; margin-bottom:30px;'>💡 My Key Skills</h2>", unsafe_allow_html=True)
+    st.markdown("## My Key Skills")
 
     skills = {
         "Python": "Used for automation, scripts, and cybersecurity tools.", 
@@ -179,55 +179,8 @@ elif section == "Skills":
         "Cybersecurity": "Skills in cryptography, hashes, vulnerability testing."
     }
 
-    # CSS for glassmorphism + neon glow effect
-    st.markdown("""
-    <style>
-    .skill-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 20px;
-        margin-bottom: 40px;
-    }
-    .skill-card-unique {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        color: #fff;
-        padding: 20px;
-        border-radius: 20px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 18px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s, box-shadow 0.3s;
-        cursor: default;
-    }
-    .skill-card-unique:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 12px 35px rgba(0, 255, 255, 0.5);
-        border-color: #22d3ee;
-    }
-    .skill-card-desc {
-        font-size: 12px;
-        font-weight: normal;
-        margin-top: 10px;
-        color: rgba(255,255,255,0.8);
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Render skill cards
-    skill_html = "<div class='skill-grid'>"
     for skill, desc in skills.items():
-        skill_html += f"""
-        <div class='skill-card-unique'>
-            {skill}
-            <div class='skill-card-desc'>{desc}</div>
-        </div>
-        """
-    skill_html += "</div>"
-
-    st.markdown(skill_html, unsafe_allow_html=True)
+        st.markdown(f"**{skill}**: {desc}")
 
 #CV
 elif section == "CV":
