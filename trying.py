@@ -81,7 +81,7 @@ footer {{ text-align:center; color:{T['muted']}; padding:20px; }}
 
 # ------------------ SIDEBAR ------------------
 with st.sidebar:
-    st.markdown("### ⚙️ Settings")
+    st.markdown("###  Settings")
     if st.button("Toggle Dark / Light "):
         st.session_state.theme = "light" if st.session_state.theme == "dark" else "dark"
         st.rerun()
@@ -122,11 +122,11 @@ elif section == "About":
     st.markdown("""
     <div class="card">
       <h2>Education</h2>
-      <b>BSc Computer Science</b> — Walter Sisulu University (2022–2026)<br>
+      <b>BSc Computer Science</b> — Walter Sisulu University (2023–2026)<br>
       Modules: Data Structures, Computer Architecture, Operating Systems, Networking,
       Mathematics, Web Development, Software Engineering
       <hr>
-      <b>Grade 12</b> — Eqinisweni Secondary School (2022)
+      <b>National Senior Cerfificate</b> — Eqinisweni Secondary School (2022)
     </div>
 
     <div class="card">
