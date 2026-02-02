@@ -7,7 +7,6 @@ import hashlib
 from PIL import Image, ImageDraw, ImageFont
 import io
 
-# ------------------ PAGE CONFIG ------------------
 st.set_page_config(
     page_title="Mmatsie Sara Bopape | Cybersecurity Portfolio",
     page_icon="",
@@ -15,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ------------------ THEME ------------------
+#Theme
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
 
@@ -42,7 +41,6 @@ THEMES = {
 
 T = THEMES[st.session_state.theme]
 
-# ------------------ GLOBAL CSS ------------------
 st.markdown(f"""
 <style>
 html, body, .stApp {{ background:{T['bg']}; color:{T['text']}; }}
@@ -79,7 +77,7 @@ footer {{ text-align:center; color:{T['muted']}; padding:20px; }}
 </style>
 """, unsafe_allow_html=True)
 
-# ------------------ SIDEBAR ------------------
+#Sidebar 
 with st.sidebar:
     st.markdown("###  Settings")
     if st.button("Toggle Dark / Light "):
@@ -88,7 +86,7 @@ with st.sidebar:
     st.markdown("---")
     section = st.radio("Navigate", ["Home", "About", "Projects", "Skills", "CV", "Ask Me", "Game", "Tools", "Timeline", "Badges"])
 
-# ------------------ HOME ------------------
+#Home
 if section == "Home":
     st.markdown(f"""
     <div class="hero">
@@ -112,12 +110,12 @@ if section == "Home":
     st.markdown(f"""
     <div class="card kpi">
       <div><h3>2026</h3><p>Final Year</p></div>
-      <div><h3>10+</h3><p>Certifications</p></div>
+      <div><h3>5+</h3><p>Certifications</p></div>
       <div><h3>6+</h3><p>Languages</p></div>
     </div>
     """, unsafe_allow_html=True)
 
-# ------------------ ABOUT ------------------
+#About 
 elif section == "About":
     st.markdown("""
     <div class="card">
@@ -140,7 +138,7 @@ elif section == "About":
     </div>
     """, unsafe_allow_html=True)
 
-# ------------------ PROJECTS ------------------
+#Projects
 elif section == "Projects":
     st.markdown("""
     <div class="card">
@@ -153,7 +151,6 @@ elif section == "Projects":
     </div>
     """, unsafe_allow_html=True)
 
-    # Encryption / Decryption Demo
     st.markdown("<h4>Try a quick encryption & decryption demo:</h4>", unsafe_allow_html=True)
     msg = st.text_input("Message")
     key = st.number_input("Shift key (1-25)", 1, 3)
@@ -169,7 +166,7 @@ elif section == "Projects":
         st.success(f"Decrypted message: {decrypted}")
         st.info("Decryption reverses the shift to reveal the original message.")
 
-# ------------------ SKILLS ------------------
+#Skills
 elif section == "Skills":
     st.markdown("<h2>My Skills</h2>", unsafe_allow_html=True)
     skills = {
@@ -183,7 +180,7 @@ elif section == "Skills":
     for skill, desc in skills.items():
         st.markdown(f'<div class="skill-card" title="{desc}">{skill}</div>', unsafe_allow_html=True)
 
-# ------------------ CV ------------------
+#CV
 elif section == "CV":
     st.markdown("## Download My CV")
     st.markdown("<div class='card'>Click below to download my CV.</div>", unsafe_allow_html=True)
@@ -199,7 +196,7 @@ elif section == "CV":
     except FileNotFoundError:
         st.error("CV file not found. Include it in the project folder.")
 
-# ------------------ CHAT ------------------
+#Chat
 elif section == "Ask Me":
     st.markdown("## Ask Me Anything")
     knowledge = {
@@ -208,6 +205,7 @@ elif section == "Ask Me":
         "when did she matriculate": "Matriculated in 2022 at Eqinisweni Secondary School.",
         "what does she study": "BSc Computer Science at Walter Sisulu University.",
         "what are her skills": "Cybersecurity, networking, C++, Java, Python, JavaScript, Linux.",
+        "What is she doing": "She is a fianl year Computer Science Student"
     }
     if "chat" not in st.session_state: st.session_state.chat=[]
     for role, msg in st.session_state.chat:
@@ -220,7 +218,7 @@ elif section == "Ask Me":
         st.session_state.chat.append(("ai", answer))
         st.rerun()
         
-# ------------------ GAME ------------------
+#GAME
 elif section == "Game":
     st.markdown("## Cyber Card Match  ")
     st.write("A secret card is drawn. Pick a number (1–13). You win if your guess matches the AI card!")
@@ -235,18 +233,16 @@ elif section == "Game":
 
     if st.button("Reveal Card") and not st.session_state.played:
         st.session_state.played = True
-        # Generate a fair random secret card
+
         st.session_state.secret_card = random.randint(1, 13)
 
         st.write(f"The AI card number is **{st.session_state.secret_card}**")
 
-        # Determine result
         if guess == st.session_state.secret_card:
             st.session_state.win = True
             st.balloons()
             st.success(" Congratulations! You won! Your cyber instincts are strong ")
         else:
-            # Slightly fun feedback if close
             if abs(guess - st.session_state.secret_card) == 1:
                 st.info("So close! You were just 1 away! ")
             else:
@@ -258,7 +254,7 @@ elif section == "Game":
         st.session_state.win = False
         st.rerun()
 
-# ------------------ TOOLS ------------------
+#TOOLS
 elif section=="Tools":
     st.markdown("##  Cybersecurity Tools & Demos")
     st.markdown("### SHA256 Hash Generator\nSHA256 creates a secure hash, used for password protection, digital signatures, and data integrity.")
@@ -267,7 +263,7 @@ elif section=="Tools":
         h = hashlib.sha256(msg.encode()).hexdigest()
         st.success(f"SHA256 Hash: {h}")
 
-# ------------------ TIMELINE ------------------
+#TIMELINE
 elif section=="Timeline":
     st.markdown("##  My Journey")
     timeline_events = [
@@ -283,12 +279,12 @@ elif section=="Timeline":
             st.balloons()
             st.success(f" Milestone {year} celebrated!")
             
-# ------------------ BADGES / CERTIFICATES ------------------
-elif section == "Badges":
+#CERTIFICATES
+elif section == "Certificates":
     from PIL import Image
     import os
 
-    st.markdown("## Certificates & Badges")
+    st.markdown("## Certificates ")
     st.markdown("Use Next and Previous to view your achievements.")
 
     # Initialize index
@@ -313,7 +309,6 @@ elif section == "Badges":
 
     cert = certificates[st.session_state.badge_index]
 
-    # Absolute path based on app.py location
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     img_path = os.path.join(BASE_DIR, cert["img"])
 
@@ -339,7 +334,7 @@ elif section == "Badges":
         if st.button("Next") and st.session_state.badge_index < total - 1:
             st.session_state.badge_index += 1
 
-# ------------------ FOOTER ------------------
+#FOOTER
 st.markdown(f"""
 <footer>
 © 2026 Mmatsie Sara Bopape • Cybersecurity Portfolio
