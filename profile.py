@@ -171,12 +171,12 @@ elif section == "Skills":
     st.markdown("## My Key Skills")
 
     skills = {
-        "Python": "Used for automation, scripts, and cybersecurity tools.", 
-        "Java": "Experience in OOP and web apps.",
-        "C++": "Strong understanding of algorithms and system programming.",
-        "Networking": "Knowledge of TCP/IP, routing, switching, Packet Tracer.",
-        "Linux": "Proficient in CLI, Bash scripting, and server management.",
-        "Cybersecurity": "Skills in cryptography, hashes, vulnerability testing."
+        "Python", 
+        "Java",
+        "C++",
+        "Networking",
+        "Linux",
+        "Basic cybersecurity"
     }
 
     for skill, desc in skills.items():
