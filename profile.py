@@ -293,12 +293,12 @@ elif section == "Badges":
 
     # Certificates list (MAKE SURE these files exist in your app folder)
     certificates = [
-        {"img": "certificate1.png", "name": "Certificate 1"},
-        {"img": "certificate2.png", "name": "Certificate 2"},
-        {"img": "certificate3.png", "name": "Certificate 3"},
-        {"img": "certificate4.png", "name": "Certificate 4"},
-        {"img": "certificate5.png", "name": "Certificate 5"},
-        {"img": "certificate6.png", "name": "Certificate 6"},
+        {"img": "certificate1.jpeg", "name": "Certificate 1"},
+        {"img": "certificate2.jpeg", "name": "Certificate 2"},
+        {"img": "certificate3.jpeg", "name": "Certificate 3"},
+        {"img": "certificate4.jpeg", "name": "Certificate 4"},
+        {"img": "certificate5.jpeg", "name": "Certificate 5"},
+        {"img": "certificate6.jpeg", "name": "Certificate 6"},
     ]
 
     total = len(certificates)
