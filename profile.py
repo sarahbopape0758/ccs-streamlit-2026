@@ -188,7 +188,7 @@ elif section == "CV":
     st.markdown("## Download My CV")
     st.markdown("<div class='card'>Click below to download my CV.</div>", unsafe_allow_html=True)
     try:
-        with open("Mmatsie_Sara_Bopape_CV.pdf", "rb") as f:
+        with open("MMATSIE SARA BOPAPE Curriculum Vitae2.pdf", "rb") as f:
             cv_bytes = f.read()
         st.download_button(
             label=" Download CV (PDF)",
@@ -216,13 +216,13 @@ elif section == "Ask Me":
     if st.button("Send") and q:
         st.session_state.chat.append(("user", q))
         answer = next((knowledge[k] for k in knowledge if k in q.lower()), 
-                      "Please contact Sara: bopapesarah2324@gmail.com")
+                      "Please contact Sara: bopapesarah2324@gmail.com  /n for more information")
         st.session_state.chat.append(("ai", answer))
         st.rerun()
         
 # ------------------ GAME ------------------
 elif section == "Game":
-    st.markdown("##  Cyber Card Match / Mini CTF ")
+    st.markdown("## Cyber Card Match / Mini CTF ")
     st.write("A secret card is drawn. Pick a number (1–13). You win if your guess matches the AI card!")
 
     # Initialize game state
