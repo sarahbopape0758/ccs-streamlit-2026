@@ -216,13 +216,13 @@ elif section == "Ask Me":
     if st.button("Send") and q:
         st.session_state.chat.append(("user", q))
         answer = next((knowledge[k] for k in knowledge if k in q.lower()), 
-                      "Please contact Sara: bopapesarah2324@gmail.com for more information")
+                      "For More Information please contact Sara at bopapesarah2324@gmail.com")
         st.session_state.chat.append(("ai", answer))
         st.rerun()
         
 # ------------------ GAME ------------------
 elif section == "Game":
-    st.markdown("## Cyber Card Match / Mini CTF ")
+    st.markdown("## Cyber Card Match  ")
     st.write("A secret card is drawn. Pick a number (1–13). You win if your guess matches the AI card!")
 
     # Initialize game state
