@@ -285,7 +285,7 @@ elif section in ["Badges", "Certificates"]:
     import streamlit as st
 
     st.markdown("## Certificates & Badges")
-    st.markdown("Use Next and Previous to view your achievements.")
+    st.markdown("Use Next and Previous to view My achievements.")
 
     if "badge_index" not in st.session_state:
         st.session_state.badge_index = 0
