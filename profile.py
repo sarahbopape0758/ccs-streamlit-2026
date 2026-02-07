@@ -292,7 +292,7 @@ elif section in ["Badges", "Certificates"]:
 
     certificates = [
         {"img": "certificate1.jpeg", "name": "Certificate 1"},
-        {"img": "cybersecuritycertificate ALX.jpeg", "name": "Certificate 2"},
+        {"img": "cybersecuritycertificate ALX.png", "name": "Certificate 2"},
         {"img": "certificate2.jpeg", "name": "Certificate 3"},
         {"img": "certificate3.jpeg", "name": "Certificate 4"},
         {"img": "certificate4.jpeg", "name": "Certificate 5"},
