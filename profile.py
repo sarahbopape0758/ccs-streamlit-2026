@@ -292,11 +292,12 @@ elif section in ["Badges", "Certificates"]:
 
     certificates = [
         {"img": "certificate1.jpeg", "name": "Certificate 1"},
-        {"img": "certificate2.jpeg", "name": "Certificate 2"},
-        {"img": "certificate3.jpeg", "name": "Certificate 3"},
-        {"img": "certificate4.jpeg", "name": "Certificate 4"},
-        {"img": "certificate5.jpeg", "name": "Certificate 5"},
-        {"img": "certificate6.jpeg", "name": "Certificate 6"},
+        {"img": "cybersecuritycertificate ALX.jpeg", "name": "Certificate 2"},
+        {"img": "certificate2.jpeg", "name": "Certificate 3"},
+        {"img": "certificate3.jpeg", "name": "Certificate 4"},
+        {"img": "certificate4.jpeg", "name": "Certificate 5"},
+        {"img": "certificate5.jpeg", "name": "Certificate 6"},
+        {"img": "certificate6.jpeg", "name": "Certificate 7"},
     ]
 
     total = len(certificates)
